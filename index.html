@@ -1,0 +1,504 @@
+<title>管的是哪一站？</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Noto+Sans+TC:wght@400;700;900&display=swap">
+<style>
+:root{
+  --paper:#FFFFFF; --ink:#1A1A1A; --red:#DC0014; --mute:#6E6E6E;
+  --rule:#DCDCDC; --tint:#F7F7F5; --gray-dot:#BDBDBD;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif;
+  font-size:16px; line-height:1.65;
+}
+.disp{font-family:"Archivo Black","Arial Black","Noto Sans TC",sans-serif; font-weight:900;}
+.wrap{max-width:760px; margin:0 auto; padding:0 20px 90px;}
+/* progress */
+#bar{position:fixed; top:0; left:0; height:4px; background:var(--red); width:0%; z-index:9; transition:width .3s;}
+@media (prefers-reduced-motion: reduce){ #bar{transition:none;} }
+/* hero */
+.hero{padding:64px 0 40px; border-bottom:3px solid var(--red);}
+.eyebrow{color:var(--red); font-weight:900; letter-spacing:.14em; font-size:13px; text-transform:uppercase;}
+.hero h1{font-size:clamp(34px,7vw,54px); line-height:1.15; margin:10px 0 14px; letter-spacing:.01em; text-wrap:balance; font-weight:900;}
+.deck{color:var(--ink); font-size:17px; max-width:34em;}
+.deck b{color:var(--red);}
+.byline{color:var(--mute); font-size:13.5px; margin-top:14px;}
+/* sections */
+section{padding:44px 0 8px; border-bottom:1px solid var(--rule);}
+section.locked{display:none;}
+.stepno{font-family:"Archivo Black","Arial Black",sans-serif; color:var(--red); font-size:30px; line-height:1;}
+h2{font-size:clamp(21px,4.4vw,27px); font-weight:900; margin:6px 0 4px; text-wrap:balance;}
+.sub{color:var(--mute); font-size:14.5px; margin-bottom:18px;}
+p.talk{max-width:36em; margin:10px 0;}
+.hint{color:var(--mute); font-size:14px;}
+/* buttons */
+.btn{display:inline-block; border:none; cursor:pointer; font:inherit; font-weight:700;
+  padding:12px 22px; margin:18px 0 26px;}
+.btn.primary{background:var(--ink); color:#fff;}
+.btn.primary:hover{background:#000;}
+.btn.ghost{background:transparent; color:var(--ink); border:2px solid var(--ink); padding:10px 20px;}
+.btn.ghost:hover{background:var(--tint);}
+.btn:focus-visible,.card:focus-visible,input:focus-visible{outline:3px solid var(--red); outline-offset:2px;}
+/* data table */
+.datbox{border:2px solid var(--ink); height:300px; overflow:auto; background:var(--paper);}
+table{border-collapse:collapse; width:100%; font-variant-numeric:tabular-nums; font-size:13.5px;}
+th{position:sticky; top:0; background:var(--ink); color:#fff; text-align:left; padding:7px 12px; font-weight:700;}
+td{padding:5.5px 12px; border-bottom:1px solid var(--rule); white-space:nowrap;}
+tr:nth-child(even) td{background:var(--tint);}
+.badge{display:inline-block; background:var(--red); color:#fff; font-weight:900; padding:3px 10px; font-size:13.5px; margin-right:8px;}
+/* dot field */
+.plot{border:2px solid var(--ink); background:var(--paper); width:100%; display:block; touch-action:manipulation;}
+.axis{fill:var(--mute); font-size:11px; font-family:inherit;}
+.legend{display:flex; gap:18px; flex-wrap:wrap; margin:12px 0 4px; font-size:14.5px;}
+.legend .sw{display:inline-block; width:13px; height:13px; border-radius:50%; margin-right:6px; vertical-align:-1px;}
+.pillrow{display:flex; gap:10px; flex-wrap:wrap; margin:14px 0;}
+.pill{border:2px solid var(--ink); padding:8px 14px; font-size:15px; font-weight:700; min-width:150px;}
+.pill .num{font-family:"Archivo Black","Arial Black",sans-serif; font-size:22px; display:block;}
+.pill.hot{border-color:var(--red); color:var(--red);}
+/* slider */
+.sliderrow{display:flex; align-items:center; gap:14px; margin:16px 0 6px; flex-wrap:wrap;}
+.kval{font-family:"Archivo Black","Arial Black",sans-serif; font-size:30px; color:var(--red); min-width:120px;}
+input[type=range]{flex:1; min-width:200px; accent-color:var(--red); height:32px;}
+/* group cards */
+.cards{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin:16px 0;}
+.gcard{border:2px solid var(--ink); padding:14px 16px;}
+.gcard h3{font-size:16px; font-weight:900; margin-bottom:4px;}
+.gcard .big{font-family:"Archivo Black","Arial Black",sans-serif; font-size:24px;}
+.gcard small{color:var(--mute); font-size:13px; display:block;}
+.gcard.hot{border-color:var(--red);} .gcard.hot h3,.gcard.hot .big{color:var(--red);}
+.hbar{height:14px; background:var(--tint); margin-top:8px; position:relative;}
+.hbar i{position:absolute; inset:0 auto 0 0; background:var(--ink); display:block;}
+.gcard.hot .hbar i{background:var(--red);}
+/* strategies */
+.strats{display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin:16px 0;}
+.card{border:2px solid var(--ink); background:var(--paper); padding:16px; text-align:left; cursor:pointer; font:inherit;}
+.card:hover{background:var(--tint);}
+.card.on{background:var(--ink); color:#fff;}
+.card.on .cost{color:#ffd7db;}
+.card h3{font-size:17px; font-weight:900;}
+.card .cost{color:var(--mute); font-size:13.5px; margin-top:4px;}
+#simout{display:none; border:3px solid var(--red); padding:18px 18px 8px; margin:18px 0;}
+#simout h3{color:var(--red); font-size:18px; font-weight:900;}
+.resrow{display:flex; gap:26px; flex-wrap:wrap; margin:10px 0;}
+.res .n{font-family:"Archivo Black","Arial Black",sans-serif; font-size:26px;}
+.res small{color:var(--mute); display:block; font-size:13px;}
+.verdict{border-top:1px solid var(--rule); margin-top:8px; padding:10px 0; font-size:15px;}
+#cmp{margin:8px 0 18px; font-size:14.5px; display:none;}
+#cmp b{color:var(--red);}
+/* formula */
+.formula{background:var(--red); color:#fff; padding:18px 20px; margin:18px 0; font-weight:900; font-size:clamp(16px,3.4vw,20px);}
+.formula small{display:block; font-weight:400; font-size:14px; margin-top:6px; color:#ffd7db;}
+.steps-done{margin:14px 0; padding-left:0; list-style:none;}
+.steps-done li{padding:8px 0; border-bottom:1px solid var(--rule); font-size:16px;}
+.steps-done b{color:var(--red); font-family:"Archivo Black","Arial Black",sans-serif; margin-right:10px;}
+footer{color:var(--mute); font-size:13px; padding:26px 0 10px; line-height:1.7;}
+.tip{position:fixed; background:var(--ink); color:#fff; font-size:13px; padding:8px 12px; pointer-events:none; display:none; z-index:10; max-width:230px;}
+@media (max-width:520px){ .pill{min-width:120px;} }
+</style>
+
+<div id="bar"></div>
+<div class="wrap">
+
+<header class="hero">
+  <div class="eyebrow">CRM LAB · 顧客關係管理 互動體驗</div>
+  <h1>老闆丟給你<br>一包消費資料</h1>
+  <p class="deck">你是剛報到的行銷企劃。老闆把檔案傳給你，說：<b>「這是過去兩年的消費紀錄，你幫我想想，我們的顧客關係管理該怎麼做。」</b></p>
+  <p class="deck" style="margin-top:8px">接下來十分鐘，你會做完一個 CRM 經理人的四個判斷。</p>
+  <button class="btn primary" onclick="unlock(1)">打開資料 ↓</button>
+  <div class="byline">授課教師：廖健博｜架構：NES 顧客動態模型（《管理學報》應用框架）</div>
+</header>
+
+<!-- STEP 1 -->
+<section id="s1" class="locked">
+  <div class="stepno">01</div>
+  <h2>這就是老闆丟給你的東西</h2>
+  <div class="sub">系統剛匯出的原始檔——每一列是一筆消費</div>
+  <p><span class="badge" style="background:var(--ink)" id="statStore">–</span><span class="badge" id="statTx">–</span><span class="badge" id="statCust">–</span>
+     <button class="btn ghost" style="margin:0 0 0 6px; padding:6px 14px; font-size:14px" onclick="regen()">🎲 換一家店</button></p>
+  <div class="datbox" style="margin-top:12px"><table id="txTable"></table></div>
+  <p class="talk" style="margin-top:14px">盯著它十秒。<b style="color:var(--red)">你看得出該做什麼嗎？</b>看不出來是正常的——人類讀不了四千列。</p>
+  <button class="btn primary" onclick="unlock(2)">下一步：別慌，先壓縮 ↓</button>
+</section>
+
+<!-- STEP 2 -->
+<section id="s2" class="locked">
+  <div class="stepno">02</div>
+  <h2>把每個顧客，壓成一顆點</h2>
+  <div class="sub">橫軸＝上次消費是幾天前（越右越久沒來）・縱軸＝總共買過幾次</div>
+  <svg id="plot2" class="plot" viewBox="0 0 720 360" role="img" aria-label="顧客散點圖"></svg>
+  <p class="talk">四千多筆訂單，變成幾百顆點——<b>一顆點＝一位顧客</b>。點一顆看看他的故事。</p>
+  <p class="hint" id="dotinfo">（點任一顆點）</p>
+  <button class="btn primary" onclick="unlock(3)">下一步：換你決定 ↓</button>
+</section>
+
+<!-- STEP 3 -->
+<section id="s3" class="locked">
+  <div class="stepno">03</div>
+  <h2>你來定標準：幾天沒回來，算「沉睡」？</h2>
+  <div class="sub">拉動滑桿——這條線的位置，是「你的判斷」，不是課本給的</div>
+  <div class="sliderrow">
+    <span class="kval"><span id="kNum">90</span> 天</span>
+    <input type="range" id="kSlider" min="30" max="365" step="5" value="90" aria-label="沉睡門檻天數">
+  </div>
+  <svg id="plot3" class="plot" viewBox="0 0 720 360" role="img" aria-label="NES 分群圖"></svg>
+  <div class="legend">
+    <span><i class="sw" style="background:var(--ink)"></i>新顧客 N（只買過一次，還新鮮）</span>
+    <span><i class="sw" style="background:var(--red)"></i>主力顧客 E（一直回來）</span>
+    <span><i class="sw" style="background:var(--gray-dot)"></i>沉睡顧客 S（超過門檻沒回來）</span>
+  </div>
+  <div class="pillrow">
+    <div class="pill">新顧客 N<span class="num" id="cN">–</span></div>
+    <div class="pill hot">主力 E<span class="num" id="cE">–</span></div>
+    <div class="pill">沉睡 S<span class="num" id="cS">–</span></div>
+  </div>
+  <p class="talk">左右拉一下——<b style="color:var(--red)">「沉睡的人有多少」是被你的標準定義出來的。</b>實務上這個天數要跟老闆、跟資料討論出來（這家店的平均回購週期約 <span id="cycleHint">–</span> 天，是個好起點）。</p>
+  <button class="btn primary" onclick="unlock(4)">下一步：這三群人值多少？ ↓</button>
+</section>
+
+<!-- STEP 4 -->
+<section id="s4" class="locked">
+  <div class="stepno">04</div>
+  <h2>三群人，下個月各值多少錢？</h2>
+  <div class="sub">預估貢獻 ＝ 人數 × 下個月會回來買的機率 × 平均客單價</div>
+  <div class="cards" id="valCards"></div>
+  <p class="talk" id="valInsight"></p>
+  <button class="btn primary" onclick="unlock(5)">下一步：錢投哪一站？ ↓</button>
+</section>
+
+<!-- STEP 5 -->
+<section id="s5" class="locked">
+  <div class="stepno">05</div>
+  <h2>你有 10 萬元行銷預算，只能投一站</h2>
+  <div class="sub">點一張卡，看 12 個月後會發生什麼（可以四張都試）</div>
+  <div class="strats">
+    <button class="card" data-st="acq"><h3>① 開發潛在顧客</h3>投廣告、發試用<div class="cost">效果：每月上門的新顧客接近翻倍</div></button>
+    <button class="card" data-st="onb"><h3>② 顧好新顧客</h3>首購禮＋教學引導<div class="cost">效果：新顧客回來第二次的比率 35%→60%</div></button>
+    <button class="card" data-st="ret"><h3>③ 深耕主力顧客</h3>會員分級＋加購<div class="cost">效果：主力每月流失 12%→8%</div></button>
+    <button class="card" data-st="wake"><h3>④ 喚醒沉睡顧客</h3>「好久不見」訊息＋回店禮<div class="cost">效果：每月喚回 6% 的沉睡顧客</div></button>
+  </div>
+  <div id="simout">
+    <h3 id="simTitle"></h3>
+    <svg id="plot5" class="plot" viewBox="0 0 720 260" style="border-width:0; border-top:1px solid var(--rule)"></svg>
+    <div class="resrow">
+      <div class="res"><span class="n" id="rCust">–</span><small>12 個月後的活躍顧客（不投＝<span id="rCust0">–</span>）</small></div>
+      <div class="res"><span class="n" id="rRev">–</span><small>12 個月多賺的營收（已扣 10 萬成本）</small></div>
+    </div>
+    <div class="verdict" id="verdict"></div>
+  </div>
+  <p id="cmp"></p>
+  <button class="btn primary" onclick="unlock(6)">最後一步 ↓</button>
+</section>
+
+<!-- STEP 6 -->
+<section id="s6" class="locked">
+  <div class="stepno">06</div>
+  <h2>你剛剛做的，就是 CRM</h2>
+  <ul class="steps-done">
+    <li><b>01</b>面對一包沒人讀得完的原始資料（老闆的日常）</li>
+    <li><b>02</b>把交易壓成顧客（分析的第一步永遠是換單位）</li>
+    <li><b>03</b>自己定了「沉睡」的標準（判斷，不是套公式）</li>
+    <li><b>04</b>算出三群人各值多少（人多 ≠ 值錢）</li>
+    <li><b>05</b>把有限的錢投給對的站（資源配置，才是管理）</li>
+  </ul>
+  <div class="formula">顧客總數上限 ＝ 每月開發的新顧客 ÷ 每月流失率
+    <small>用這包資料試算：每月約 <span id="fA">–</span> 位新顧客、主力月流失約 12% → 上限約 <span id="fU">–</span> 位。想抬高天花板？回去看第 05 步你選了哪張卡。</small>
+  </div>
+  <p class="talk">下一堂課：一個顧客到底值多少錢？——<b style="color:var(--red)">顧客終身價值 CLV</b>。</p>
+  <button class="btn ghost" onclick="location.reload()">↺ 換一批資料，重玩一次</button>
+  <footer>教學互動頁 v1・「顧客關係管理」課程用<br>授課教師：廖健博｜分群架構：NES 顧客動態模型——吳基逞、廖健博、卓雍然（2024），《管理學報》41(3)：387–411<br>資料為課堂模擬自動生成，非真實個資。</footer>
+</section>
+</div>
+<div class="tip" id="tip"></div>
+
+<script>
+/* ---------- seeded RNG ---------- */
+let seed = 20260905;
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
+let rnd = mulberry32(seed);
+const R=(a,b)=>a+rnd()*(b-a), RI=(a,b)=>Math.floor(R(a,b+1));
+
+/* ---------- data generation ---------- */
+let customers=[], txCount=0, avgCycle=0, storeName='', monthlyNew=30;
+const STORES=['巷口手搖','山丘健身房','初霧甜點','白日夢書店','光合沙拉','好眠寢具','浪人滑板具','週三花店'];
+/* 三種店型（不明講，讓資料自己說話）：mature 成熟店 / young 爆紅新店 / bleeding 大失血店 */
+const MIX={
+  mature:  [['鐵粉',.12],['常客',.28],['季節客',.16],['一次客',.22],['新一次客',.08],['流失客',.14]],
+  young:   [['鐵粉',.03],['新常客',.14],['常客',.06],['新一次客',.58],['一次客',.06],['流失客',.13]],
+  bleeding:[['鐵粉',.06],['常客',.12],['季節客',.08],['一次客',.22],['流失客',.52]],
+};
+function pickType(mix){
+  let r=rnd(), acc=0;
+  for(const [t,w] of mix){ acc+=w; if(r<acc) return t; }
+  return mix[mix.length-1][0];
+}
+function genData(){
+  rnd = mulberry32(seed);
+  customers=[]; txCount=0;
+  const scen = ['mature','young','bleeding'][RI(0,2)];
+  storeName = STORES[RI(0,STORES.length-1)];
+  const NC = RI(680,860);
+  let cycles=[];
+  for(let i=0;i<NC;i++){
+    const type=pickType(MIX[scen]);
+    let cycle=0, span, active=true;
+    if(type==='鐵粉'){ cycle=RI(7,21); span=RI(240,720); }
+    else if(type==='常客'){ cycle=RI(30,75); span=RI(180,720); }
+    else if(type==='新常客'){ cycle=RI(15,45); span=RI(30,150); }
+    else if(type==='季節客'){ cycle=RI(90,170); span=RI(300,720); }
+    else if(type==='一次客'){ span=RI(10,500); }
+    else if(type==='新一次客'){ span=RI(3,110); }
+    else { cycle=RI(20,60); span=RI(300,720); active=false; }
+    const base=R(90,900);           // 個人客單基準
+    let tx=[], day;
+    if(cycle===0){ tx.push(span); }
+    else if(active){
+      day=span;
+      while(day>0){ tx.push(Math.max(1,day)); day-=cycle*R(0.6,1.6); }
+    } else {                        // 流失客：買到中途停止
+      const stop=RI(150,500);
+      day=span;
+      while(day>stop){ tx.push(day); day-=cycle*R(0.6,1.6); }
+      if(tx.length===0) tx.push(stop+RI(0,60));
+    }
+    const amts=tx.map(()=>Math.round(base*R(0.5,1.8)/10)*10);
+    const freq=tx.length, recency=Math.round(Math.min(...tx));
+    customers.push({id:'C'+String(1000+i), tx, amts, freq,
+      recency, total:amts.reduce((a,b)=>a+b,0)});
+    txCount+=freq;
+    if(freq>1 && cycle>0) cycles.push(cycle);
+  }
+  avgCycle=Math.round(cycles.reduce((a,b)=>a+b,0)/cycles.length)||60;
+  /* 每月自然新客：用資料估（近 90 天首購人數 ÷ 3） */
+  const firstBuyRecent=customers.filter(c=>Math.max(...c.tx)<=90).length;
+  monthlyNew=Math.min(100, Math.max(22, Math.round(firstBuyRecent/3)));
+}
+
+/* ---------- step 1: table ---------- */
+function fmtDate(daysAgo){
+  const d=new Date(2026,8,5); d.setDate(d.getDate()-daysAgo);
+  return `${d.getFullYear()}/${String(d.getMonth()+1).padStart(2,'0')}/${String(d.getDate()).padStart(2,'0')}`;
+}
+function renderTable(){
+  const rows=[];
+  customers.forEach(c=>c.tx.forEach((t,i)=>rows.push([t,c.id,c.amts[i]])));
+  rows.sort((a,b)=>a[0]-b[0]);
+  let html='<tr><th>訂單日期</th><th>顧客編號</th><th>金額</th></tr>';
+  const show=rows.slice(0,400);
+  show.forEach((r,i)=>{ html+=`<tr><td>${fmtDate(r[0])}</td><td>${r[1]}</td><td>$${r[2].toLocaleString()}</td></tr>`; });
+  html+=`<tr><td colspan="3" style="color:var(--mute)">……（其餘 ${(rows.length-show.length).toLocaleString()} 筆略）</td></tr>`;
+  document.getElementById('txTable').innerHTML=html;
+  document.getElementById('statStore').textContent=storeName;
+  document.getElementById('statTx').textContent=rows.length.toLocaleString()+' 筆訂單';
+  document.getElementById('statCust').textContent=customers.length+' 位顧客';
+  document.getElementById('cycleHint').textContent=avgCycle;
+}
+
+/* ---------- dot plots ---------- */
+const PW=720,PH=360,PL=46,PR=16,PT=14,PB=40;
+const xOf=r=>PL+Math.min(r,400)/400*(PW-PL-PR);
+const yOf=f=>PH-PB-Math.min(Math.sqrt(f),Math.sqrt(30))/Math.sqrt(30)*(PH-PT-PB);
+function axes(){
+  let s='';
+  [0,90,180,270,365].forEach(d=>{ s+=`<line x1="${xOf(d)}" y1="${PT}" x2="${xOf(d)}" y2="${PH-PB}" stroke="#EEEEEC"/>`+
+    `<text class="axis" x="${xOf(d)}" y="${PH-PB+16}" text-anchor="middle">${d} 天</text>`; });
+  [1,5,15,30].forEach(f=>{ s+=`<text class="axis" x="${PL-8}" y="${yOf(f)+4}" text-anchor="end">${f} 次</text>`; });
+  s+=`<text class="axis" x="${PW-PR}" y="${PH-6}" text-anchor="end">← 上次消費是幾天前 →</text>`;
+  return s;
+}
+function group(c,K){
+  if(c.recency> K) return 'S';
+  return c.freq===1 ? 'N' : 'E';
+}
+const COLORS={N:'#1A1A1A',E:'#DC0014',S:'#BDBDBD'};
+function drawDots(svgId,K){
+  const svg=document.getElementById(svgId);
+  let s=axes();
+  if(K) s+=`<line x1="${xOf(K)}" y1="${PT}" x2="${xOf(K)}" y2="${PH-PB}" stroke="#DC0014" stroke-width="2" stroke-dasharray="6 5"/>`;
+  customers.forEach((c,i)=>{
+    const g=K?group(c,K):null;
+    const col=K?COLORS[g]:'#1A1A1A';
+    const jitter=(i%7-3)*3;
+    s+=`<circle data-i="${i}" cx="${(xOf(c.recency)+jitter).toFixed(1)}" cy="${yOf(c.freq).toFixed(1)}" r="4" fill="${col}" fill-opacity="${K?0.82:0.55}"/>`;
+  });
+  svg.innerHTML=s;
+}
+function counts(K){
+  const n={N:0,E:0,S:0};
+  customers.forEach(c=>n[group(c,K)]++);
+  return n;
+}
+/* dot tooltip (step2) */
+document.addEventListener('click',e=>{
+  const t=e.target;
+  if(t.tagName==='circle'&&t.dataset.i!==undefined){
+    const c=customers[+t.dataset.i];
+    document.getElementById('dotinfo').innerHTML=
+      `<b>${c.id}</b>：買過 <b>${c.freq}</b> 次，上次是 <b>${c.recency}</b> 天前，總共花了 <b>$${c.total.toLocaleString()}</b>。`+
+      (c.recency>180?'——很久沒來了，他還算你的顧客嗎？':c.freq>=10?'——這位是鐵粉。':'');
+  }
+});
+
+/* ---------- step 3 ---------- */
+const kSlider=document.getElementById('kSlider');
+function updateK(){
+  const K=+kSlider.value;
+  document.getElementById('kNum').textContent=K;
+  drawDots('plot3',K);
+  const n=counts(K), tot=customers.length;
+  const pct=v=>Math.round(v/tot*100)+'%';
+  document.getElementById('cN').textContent=`${n.N} 人（${pct(n.N)}）`;
+  document.getElementById('cE').textContent=`${n.E} 人（${pct(n.E)}）`;
+  document.getElementById('cS').textContent=`${n.S} 人（${pct(n.S)}）`;
+  if(!document.getElementById('s4').classList.contains('locked')) renderValue();
+}
+kSlider.addEventListener('input',updateK);
+
+/* ---------- step 4 ---------- */
+const PROB={N:0.25,E:0.45,S:0.04};
+function avgTicket(g,K){
+  let sum=0,cnt=0;
+  customers.forEach(c=>{ if(group(c,K)===g){ sum+=c.total/c.freq; cnt++; }});
+  return cnt?Math.round(sum/cnt/10)*10:0;
+}
+function renderValue(){
+  const K=+kSlider.value, n=counts(K);
+  const names={N:'新顧客 N',E:'主力顧客 E',S:'沉睡顧客 S'};
+  let maxV=0, vals={};
+  ['N','E','S'].forEach(g=>{ vals[g]={n:n[g],t:avgTicket(g,K)};
+    vals[g].v=Math.round(n[g]*PROB[g]*vals[g].t); maxV=Math.max(maxV,vals[g].v); });
+  const win=['N','E','S'].sort((a,b)=>vals[b].v-vals[a].v)[0];
+  let html='';
+  ['N','E','S'].forEach(g=>{
+    const v=vals[g];
+    const per=v.n?Math.round(v.v/v.n):0;
+    html+=`<div class="gcard ${g===win?'hot':''}">
+      <h3>${names[g]}</h3>
+      <small>${v.n} 人 × 回購機率 ${Math.round(PROB[g]*100)}% × 客單 $${v.t.toLocaleString()}</small>
+      <span class="big">$${v.v.toLocaleString()}</span><small>預估下個月貢獻（平均每人 $${per.toLocaleString()}）</small>
+      <div class="hbar"><i style="width:${Math.round(v.v/maxV*100)}%"></i></div></div>`;
+  });
+  document.getElementById('valCards').innerHTML=html;
+  let ins;
+  if(win==='N'){
+    ins=`這家店<b style="color:var(--red)">新顧客的總貢獻最大</b>——它正在衝人（可能剛開幕或廣告打很兇）。但注意：新顧客只有 ${Math.round(PROB.N*100)}% 會回來，<b>轉不成主力，這批貢獻下個月就蒸發</b>。這是「成長型」的長相。`;
+  } else if(vals.S.v > vals.E.v*0.6){
+    ins=`警訊：沉睡群 ${vals.S.n} 人的貢獻已經逼近主力——代表主力快守不住了，<b>這家店在大失血</b>。先問「他們為什麼走」，再談開發新顧客。`;
+  } else if(vals.S.n>vals.E.n){
+    ins=`沉睡群有 <b style="color:var(--red)">${vals.S.n} 人</b>——人最多，貢獻卻小。<b>人多不等於值錢</b>；但每人 $${Math.round(vals.S.v/Math.max(1,vals.S.n))} 的背後，是一批「已付過開發成本」的名單。`;
+  } else {
+    ins=`主力群 ${vals.E.n} 人扛下大部分貢獻——<b>養活這家店的是回頭客</b>。`;
+  }
+  ins+=`　<span class="hint">（按上面的 🎲 換一家店，長相會完全不同——先看資料，再下判斷。）</span>`;
+  document.getElementById('valInsight').innerHTML=ins;
+}
+
+/* ---------- step 5 simulation ---------- */
+const SIM={ pNE:0.35, churnE:0.12, pSE:0.02 };
+const STRAT={
+  acq:{name:'① 開發潛在顧客', mod:s=>s.organicNew=Math.round(s.organicNew*1.6)+8,
+    verdict:'顧客「總數」衝上去了——但每一位都要重新付廣告費，而且留不住就是往漏水桶倒水。適合：桶已補好、離天花板還遠的成長期。'},
+  onb:{name:'② 顧好新顧客', mod:s=>s.pNE=0.60,
+    verdict:'新顧客回來第二次的比率大幅拉高——第一次體驗是最便宜的留存投資。'},
+  ret:{name:'③ 深耕主力顧客', mod:s=>s.churnE=0.08,
+    verdict:'流失率是「分母」——砍它，一個新顧客都不用加，天花板自己升高。'},
+  wake:{name:'④ 喚醒沉睡顧客', mod:s=>s.pSE=0.06,
+    verdict:'沉睡群是你已經付過開發成本的資產——喚回不必重新自我介紹。'}};
+let tried={};
+function dataNote(key){
+  const K=+kSlider.value, n=counts(K), tot=customers.length;
+  if(key==='onb' && n.N<70) return `　注意：這包資料的新顧客只有 <b>${n.N} 人</b>——招是好招，但人數把上限卡死了。<b>階段不對，效果就小</b>；先開發、再配這招。`;
+  if(key==='wake') return `　這包資料的沉睡群佔 <b>${Math.round(n.S/tot*100)}%</b>——名單越大，這招越猛。`;
+  if(key==='ret') return n.E<220
+    ? `　注意：主力只剩 <b>${n.E} 人</b>——洞該堵，但池子太小，堵了也裝不滿。先回頭看看人都去哪了（沉睡群）。`
+    : `　主力有 <b>${n.E} 人</b>——錢花在已經愛你的人身上，每一塊都在堵洞。`;
+  if(key==='acq') return `　試著跟其他卡比較「同樣 10 萬，誰多賺得多」。`;
+  return '';
+}
+function simulate(mods){
+  const K=+kSlider.value, n=counts(K);
+  const T={N:avgTicket('N',K),E:avgTicket('E',K),S:avgTicket('S',K)};
+  const p={...SIM, organicNew:monthlyNew}; if(mods) mods(p);
+  let N=n.N, E=n.E, S=n.S, rev=0, series=[];
+  for(let m=0;m<12;m++){
+    rev += N*PROB.N*T.N + E*PROB.E*T.E + S*PROB.S*T.S;
+    const newN=p.organicNew;
+    const E2=E*(1-p.churnE)+N*p.pNE+S*p.pSE;
+    const S2=S*(1-p.pSE)+E*p.churnE+N*(1-p.pNE);
+    N=newN; E=E2; S=S2;
+    series.push(Math.round(N+E));
+  }
+  return {series, rev:Math.round(rev), active:Math.round(N+E)};
+}
+function runStrat(key){
+  const base=simulate(null), st=STRAT[key], out=simulate(st.mod);
+  const gain=out.rev-base.rev-100000;
+  tried[key]=gain;
+  document.querySelectorAll('.card').forEach(c=>c.classList.toggle('on',c.dataset.st===key));
+  document.getElementById('simout').style.display='block';
+  document.getElementById('simTitle').textContent=st.name+'：12 個月模擬結果';
+  document.getElementById('rCust').textContent=out.active.toLocaleString()+' 人';
+  document.getElementById('rCust0').textContent=base.active.toLocaleString()+' 人';
+  const sign=gain>=0?'+':'−';
+  document.getElementById('rRev').textContent=sign+'$'+Math.abs(gain).toLocaleString();
+  document.getElementById('verdict').innerHTML='<b style="color:var(--red)">點評：</b>'+st.verdict+dataNote(key);
+  /* chart */
+  const svg=document.getElementById('plot5');
+  const W=720,H=260,L=46,Rr=14,T=16,B=30;
+  const all=[...base.series,...out.series];
+  const lo=Math.min(...all)*0.97, hi=Math.max(...all)*1.03;
+  const x=i=>L+i/11*(W-L-Rr), y=v=>H-B-(v-lo)/(hi-lo)*(H-T-B);
+  const path=s=>s.map((v,i)=>`${i?'L':'M'}${x(i).toFixed(1)},${y(v).toFixed(1)}`).join('');
+  svg.innerHTML=
+    `<text class="axis" x="${L}" y="${T}">活躍顧客數（新＋主力）</text>`+
+    `<path d="${path(base.series)}" fill="none" stroke="#BDBDBD" stroke-width="2.5" stroke-dasharray="5 5"/>`+
+    `<path d="${path(out.series)}" fill="none" stroke="#DC0014" stroke-width="3"/>`+
+    `<text class="axis" x="${W-Rr}" y="${y(base.series[11])-6}" text-anchor="end" fill="#8a8a8a">不投</text>`+
+    `<text class="axis" x="${W-Rr}" y="${y(out.series[11])+(out.series[11]>=base.series[11]?-6:14)}" text-anchor="end" fill="#DC0014" font-weight="bold">投這站</text>`+
+    `<text class="axis" x="${L}" y="${H-8}">1 月</text><text class="axis" x="${W-Rr}" y="${H-8}" text-anchor="end">12 月</text>`;
+  /* comparison */
+  const keys=Object.keys(tried);
+  if(keys.length>=2){
+    const best=keys.sort((a,b)=>tried[b]-tried[a])[0];
+    document.getElementById('cmp').style.display='block';
+    document.getElementById('cmp').innerHTML='目前試過：'+keys.map(k=>
+      `${STRAT[k].name.slice(0,1)} ${tried[k]>=0?'+':'−'}$${Math.abs(tried[k]).toLocaleString()}`).join('｜')+
+      `——目前最賺的是 <b>${STRAT[best].name}</b>。試完四張再下結論。`;
+  }
+}
+document.querySelectorAll('.card').forEach(c=>c.addEventListener('click',()=>runStrat(c.dataset.st)));
+
+/* ---------- step 6 ---------- */
+function renderFormula(){
+  document.getElementById('fA').textContent=monthlyNew;
+  document.getElementById('fU').textContent=Math.round(monthlyNew/SIM.churnE).toLocaleString();
+}
+
+/* ---------- flow ---------- */
+const TOTAL=6;
+let maxStep=0;
+function unlock(k){
+  maxStep=Math.max(maxStep,k);
+  const el=document.getElementById('s'+k);
+  el.classList.remove('locked');
+  if(k===2) drawDots('plot2',null);
+  if(k===3) updateK();
+  if(k===4) renderValue();
+  if(k===6) renderFormula();
+  document.getElementById('bar').style.width=(k/TOTAL*100)+'%';
+  requestAnimationFrame(()=>el.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'}));
+}
+function regen(){
+  seed=Math.floor(Math.random()*1e9);
+  genData(); renderTable();
+  if(maxStep>=2) drawDots('plot2',null);
+  if(maxStep>=3) updateK();
+  if(maxStep>=4) renderValue();
+  tried={}; document.getElementById('simout').style.display='none';
+  document.getElementById('cmp').style.display='none';
+  document.querySelectorAll('.card').forEach(c=>c.classList.remove('on'));
+}
+genData(); renderTable();
+</script>
