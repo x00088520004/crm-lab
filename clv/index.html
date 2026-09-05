@@ -1,0 +1,245 @@
+<title>一個顧客值多少錢？</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Noto+Sans+TC:wght@400;700;900&display=swap">
+<style>
+:root{
+  --paper:#FFFFFF; --ink:#1A1A1A; --red:#DC0014; --mute:#6E6E6E;
+  --rule:#DCDCDC; --tint:#F7F7F5; --green:#1E7A3C; --amber:#B07A00;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+body{background:var(--paper); color:var(--ink);
+  font-family:"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif;
+  font-size:16px; line-height:1.65;}
+.wrap{max-width:760px; margin:0 auto; padding:0 20px 90px;}
+#bar{position:fixed; top:0; left:0; height:4px; background:var(--red); width:0%; z-index:9; transition:width .3s;}
+.hero{padding:64px 0 40px; border-bottom:3px solid var(--red);}
+.eyebrow{color:var(--red); font-weight:900; letter-spacing:.14em; font-size:13px; text-transform:uppercase;}
+.hero h1{font-size:clamp(34px,7vw,54px); line-height:1.15; margin:10px 0 14px; text-wrap:balance; font-weight:900;}
+.deck{font-size:17px; max-width:34em;}
+.deck b{color:var(--red);}
+.byline{color:var(--mute); font-size:13.5px; margin-top:14px;}
+section{padding:44px 0 8px; border-bottom:1px solid var(--rule);}
+section.locked{display:none;}
+.stepno{font-family:"Archivo Black","Arial Black",sans-serif; color:var(--red); font-size:30px; line-height:1;}
+h2{font-size:clamp(21px,4.4vw,27px); font-weight:900; margin:6px 0 4px; text-wrap:balance;}
+.sub{color:var(--mute); font-size:14.5px; margin-bottom:18px;}
+p.talk{max-width:36em; margin:10px 0;}
+.hint{color:var(--mute); font-size:14px;}
+.btn{display:inline-block; border:none; cursor:pointer; font:inherit; font-weight:700; padding:12px 22px; margin:18px 0 26px;}
+.btn.primary{background:var(--ink); color:#fff;}
+.btn.primary:hover{background:#000;}
+.btn.ghost{background:transparent; color:var(--ink); border:2px solid var(--ink); padding:10px 20px;}
+.btn:focus-visible,.vote:focus-visible,input:focus-visible{outline:3px solid var(--red); outline-offset:2px;}
+/* vote */
+.votes{display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin:16px 0;}
+.vote{border:2px solid var(--ink); background:var(--paper); padding:16px; font:inherit; font-weight:900; font-size:17px; cursor:pointer; text-align:left;}
+.vote:hover{background:var(--tint);}
+.vote.on{background:var(--ink); color:#fff;}
+/* ledger */
+.ledger{border:2px solid var(--ink);}
+.ledger table{border-collapse:collapse; width:100%; font-variant-numeric:tabular-nums; font-size:14px;}
+.ledger th{background:var(--ink); color:#fff; text-align:left; padding:7px 12px;}
+.ledger td{padding:6px 12px; border-bottom:1px solid var(--rule);}
+.ledger tr:nth-child(even) td{background:var(--tint);}
+.ledger td.fade{color:var(--mute);}
+/* sliders */
+.ctl{margin:14px 0 4px;}
+.ctl label{font-weight:700; font-size:15px; display:flex; justify-content:space-between; align-items:baseline; gap:10px;}
+.ctl label .v{font-family:"Archivo Black","Arial Black",sans-serif; color:var(--red); font-size:22px; white-space:nowrap;}
+input[type=range]{width:100%; accent-color:var(--red); height:30px;}
+.bigout{border:3px solid var(--red); padding:18px 20px; margin:18px 0;}
+.bigout .n{font-family:"Archivo Black","Arial Black",sans-serif; font-size:clamp(30px,7vw,44px); color:var(--red);}
+.bigout small{color:var(--mute); display:block; font-size:14px;}
+.formula{background:var(--red); color:#fff; padding:16px 20px; margin:16px 0; font-weight:900; font-size:clamp(15px,3.2vw,19px);}
+.formula small{display:block; font-weight:400; font-size:13.5px; margin-top:6px; color:#ffd7db;}
+/* verdict light */
+.light{display:flex; gap:14px; align-items:center; border:2px solid var(--ink); padding:14px 16px; margin:14px 0;}
+.dot{width:26px; height:26px; border-radius:50%; flex:none; background:var(--mute);}
+.light.ok .dot{background:var(--green);} .light.warn .dot{background:var(--amber);} .light.bad .dot{background:var(--red);}
+.light b{font-size:17px;}
+.light.ok b{color:var(--green);} .light.warn b{color:var(--amber);} .light.bad b{color:var(--red);}
+/* group table */
+.gtab{border-collapse:collapse; width:100%; font-variant-numeric:tabular-nums; font-size:14.5px; margin:14px 0;}
+.gtab th{background:var(--ink); color:#fff; text-align:left; padding:8px 12px;}
+.gtab td{padding:9px 12px; border-bottom:1px solid var(--rule);}
+.gtab tr.hot td{background:#FDF0F1; font-weight:700;}
+.gtab .clv{font-family:"Archivo Black","Arial Black",sans-serif; font-size:17px;}
+.steps-done{margin:14px 0; padding-left:0; list-style:none;}
+.steps-done li{padding:8px 0; border-bottom:1px solid var(--rule); font-size:16px;}
+.steps-done b{color:var(--red); font-family:"Archivo Black","Arial Black",sans-serif; margin-right:10px;}
+footer{color:var(--mute); font-size:13px; padding:26px 0 10px; line-height:1.7;}
+a.linkred{color:var(--red); font-weight:700;}
+</style>
+
+<div id="bar"></div>
+<div class="wrap">
+
+<header class="hero">
+  <div class="eyebrow">CRM LAB · 第二堂 · 顧客終身價值</div>
+  <h1>一個顧客，<br>到底值多少錢？</h1>
+  <p class="deck">上一堂你幫老闆把顧客分好群了。今天早上，他拿著手機衝過來：<b>「廣告業務說，現在開發一個新顧客要 $600。這錢……該花嗎？」</b></p>
+  <button class="btn primary" onclick="unlock(1)">幫老闆想想 ↓</button>
+  <div class="byline">授課教師：廖健博｜接續《管的是哪一站？》：<a class="linkred" href="../">還沒玩過第一堂？先去玩 →</a></div>
+</header>
+
+<!-- STEP 1 -->
+<section id="s1" class="locked">
+  <div class="stepno">01</div>
+  <h2>先憑直覺：$600 買一個顧客，貴嗎？</h2>
+  <div class="sub">別算，先選</div>
+  <div class="votes">
+    <button class="vote" onclick="voted(this)">太貴了吧</button>
+    <button class="vote" onclick="voted(this)">很便宜啊</button>
+    <button class="vote" onclick="voted(this)">……我不知道</button>
+  </div>
+  <p class="talk" id="voteMsg" style="display:none"><b style="color:var(--red)">選「不知道」的人，恭喜答對了。</b>因為這題根本還不能回答——$600 貴不貴，要看買回來的東西<b>值多少</b>。一杯 600 的水很貴，一台 600 的 iPhone 超便宜。所以真正的問題是：<b>一個顧客值多少？</b></p>
+  <button class="btn primary" id="next1" style="display:none" onclick="unlock(2)">下一步：看一個顧客的一生 ↓</button>
+</section>
+
+<!-- STEP 2 -->
+<section id="s2" class="locked">
+  <div class="stepno">02</div>
+  <h2>小美的一生（在你的店裡）</h2>
+  <div class="sub">她每個月來一次、每次花 $450、你的毛利五成（賺 $225）</div>
+  <div class="ledger"><table id="ledger"></table></div>
+  <p class="talk" style="margin-top:14px">問題來了：<b style="color:var(--red)">這本帳會記到第幾個月？</b>沒人知道小美哪天不來——但上一堂你學過一個數字：這家店每月流失 10%。<b>流失 10%，平均壽命就是 1÷10%＝10 個月</b>（還記得那個除法嗎？又是它）。</p>
+  <p class="talk">所以小美「平均」會帶來：$225 × 10 個月 ＝ <b style="color:var(--red)">$2,250</b>。這就是她的<b>顧客終身價值（CLV）</b>。</p>
+  <button class="btn primary" onclick="unlock(3)">下一步：自己動手調 ↓</button>
+</section>
+
+<!-- STEP 3 -->
+<section id="s3" class="locked">
+  <div class="stepno">03</div>
+  <h2>CLV 計算機：三個旋鈕</h2>
+  <div class="sub">拉拉看——哪一個旋鈕最有力？</div>
+  <div class="ctl"><label>每次消費金額 <span class="v">$<span id="vT">450</span></span></label>
+    <input type="range" id="rT" min="50" max="1000" step="10" value="450"></div>
+  <div class="ctl"><label>每月來幾次 <span class="v"><span id="vF">1.0</span> 次</span></label>
+    <input type="range" id="rF" min="0.5" max="8" step="0.5" value="1"></div>
+  <div class="ctl"><label>每月流失率 <span class="v"><span id="vC">10</span>%</span></label>
+    <input type="range" id="rC" min="2" max="30" step="1" value="10"></div>
+  <div class="bigout">
+    <small>CLV ＝ 每月毛利貢獻 ÷ 流失率（毛利以五成計）</small>
+    <span class="n">$<span id="clvOut">–</span></span>
+    <small id="clvSub">–</small>
+  </div>
+  <div class="formula">CLV ＝（客單價 × 每月次數 × 毛利率）÷ 每月流失率
+    <small>跟上一堂的天花板公式（上限＝每月新顧客 ÷ 流失率）用同一個分母——<b>流失率</b>。把流失率砍半，顧客總數上限翻倍、每個顧客的價值也翻倍。CRM 的祕密只有一個字：留。</small>
+  </div>
+  <p class="talk" id="knobMsg"></p>
+  <button class="btn primary" onclick="unlock(4)">下一步：回答老闆 ↓</button>
+</section>
+
+<!-- STEP 4 -->
+<section id="s4" class="locked">
+  <div class="stepno">04</div>
+  <h2>回答老闆：$600 該不該花？</h2>
+  <div class="sub">實務判準：CLV 至少要是開發成本的 3 倍，才值得放心花（LTV/CAC ≥ 3）</div>
+  <div class="ctl"><label>廣告業務開價（開發一個顧客的成本 CAC）<span class="v">$<span id="vCAC">600</span></span></label>
+    <input type="range" id="rCAC" min="100" max="2000" step="50" value="600"></div>
+  <div class="light" id="lightBox"><span class="dot"></span><div><b id="lightHead">–</b><div class="hint" id="lightSub">–</div></div></div>
+  <p class="talk">試試看：把上面第 03 步的<b>流失率</b>調低，再回來看這個紅綠燈——<b style="color:var(--red)">同一個 $600，留得住人的店買得起，留不住人的店買不起。</b>廣告值不值得，答案不在廣告，在你的桶。</p>
+  <button class="btn primary" onclick="unlock(5)">下一步：可是顧客不只一種 ↓</button>
+</section>
+
+<!-- STEP 5 -->
+<section id="s5" class="locked">
+  <div class="stepno">05</div>
+  <h2>不是每個顧客都一樣值</h2>
+  <div class="sub">把上一堂的三群人各算一次 CLV（同一家店、同一套公式）</div>
+  <table class="gtab">
+    <tr><th>群</th><th>每月貢獻怎麼算</th><th>每月流失</th><th class="clv">CLV</th></tr>
+    <tr class="hot"><td><b>主力顧客 E</b></td><td>45% 會回購 × $2,200 × 毛利 50% ＝ $495</td><td>8%</td><td class="clv" style="color:var(--red)">$6,188</td></tr>
+    <tr><td>新顧客 N</td><td>25% 會回購 × $1,900 × 毛利 50% ＝ $238</td><td>40%</td><td class="clv">$594</td></tr>
+    <tr><td>沉睡顧客 S</td><td>4% 會回購 × $1,300 × 毛利 50% ＝ $26</td><td>25%</td><td class="clv">$104</td></tr>
+  </table>
+  <p class="talk">看到差距了嗎？<b style="color:var(--red)">一個主力顧客 ≈ 60 個沉睡顧客。</b>所以：</p>
+  <p class="talk">・$600 買到一個「會變主力」的顧客——超值；買到一個「來一次就走」的——賠死。<br>
+  ・這就是為什麼上一堂要分群：<b>CLV 決定誰值得花錢養，分群告訴你他是誰。</b><br>
+  ・「顧好新顧客」那張策略卡的真面目：把 N 的流失率 40% 壓下來，$594 的顧客就長成 $6,188。</p>
+  <p class="hint">（機率與金額的算法出自授課教師發表之 CLV 應用框架：以 NES 分群預測各群再消費機率與金額——吳基逞、廖健博、卓雍然，2024，《管理學報》41(3)。）</p>
+  <button class="btn primary" onclick="unlock(6)">收尾 ↓</button>
+</section>
+
+<!-- STEP 6 -->
+<section id="s6" class="locked">
+  <div class="stepno">06</div>
+  <h2>兩堂課，其實是同一條除法</h2>
+  <ul class="steps-done">
+    <li><b>第一堂</b>你能做多大？　顧客總數上限 ＝ 每月新顧客 ÷ <span style="color:var(--red);font-weight:900">流失率</span></li>
+    <li><b>第二堂</b>一個顧客值多少？　CLV ＝ 每月毛利貢獻 ÷ <span style="color:var(--red);font-weight:900">流失率</span></li>
+  </ul>
+  <div class="formula">兩條公式、同一個分母。生意的規模與顧客的價值，都被「留不留得住」決定。
+    <small>下一堂：怎麼用資料「預測」誰快要流失——在他離開之前留住他。</small>
+  </div>
+  <p class="talk">回老闆的訊息可以這樣打：「$600 能不能花，要看買來的人留不留得住。以我們現在的留存，主力顧客值 $6,188——<b style="color:var(--red)">但前提是，別把買來的人漏掉。</b>」</p>
+  <button class="btn ghost" onclick="location.href='../'">← 回第一堂：管的是哪一站？</button>
+  <footer>教學互動頁・「顧客關係管理」課程用<br>授課教師：廖健博｜CLV 應用框架：吳基逞、廖健博、卓雍然（2024），《管理學報》41(3)：387–411<br>LTV/CAC ≥ 3 判準：David Skok, SaaS Metrics 2.0（forEntrepreneurs）｜數字為課堂模擬。</footer>
+</section>
+</div>
+
+<script>
+const TOTAL=6;
+function unlock(k){
+  const el=document.getElementById('s'+k);
+  el.classList.remove('locked');
+  if(k===2) ledger();
+  if(k===3) calc();
+  if(k===4) verdict();
+  document.getElementById('bar').style.width=(k/TOTAL*100)+'%';
+  requestAnimationFrame(()=>el.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'}));
+}
+function voted(btn){
+  document.querySelectorAll('.vote').forEach(v=>v.classList.toggle('on',v===btn));
+  document.getElementById('voteMsg').style.display='block';
+  document.getElementById('next1').style.display='inline-block';
+}
+/* step2 ledger */
+function ledger(){
+  let html='<tr><th>月份</th><th>消費</th><th>你賺（毛利五成）</th><th>累積</th></tr>', acc=0;
+  for(let m=1;m<=6;m++){ acc+=225;
+    html+=`<tr><td>第 ${m} 個月</td><td>$450</td><td>$225</td><td><b>$${acc.toLocaleString()}</b></td></tr>`; }
+  html+='<tr><td class="fade">第 7 個月</td><td class="fade">？</td><td class="fade">？</td><td class="fade">她還會來嗎……？</td></tr>';
+  document.getElementById('ledger').innerHTML=html;
+}
+/* step3 calculator */
+const rT=document.getElementById('rT'), rF=document.getElementById('rF'), rC=document.getElementById('rC');
+function calc(){
+  const T=+rT.value, F=+rF.value, C=+rC.value/100;
+  document.getElementById('vT').textContent=T.toLocaleString();
+  document.getElementById('vF').textContent=F.toFixed(1);
+  document.getElementById('vC').textContent=Math.round(C*100);
+  const monthly=T*F*0.5, life=1/C, clv=Math.round(monthly*life);
+  document.getElementById('clvOut').textContent=clv.toLocaleString();
+  document.getElementById('clvSub').textContent=`每月毛利 $${Math.round(monthly).toLocaleString()} × 平均壽命 ${life.toFixed(1)} 個月`;
+  const msg = C<=0.05
+    ? '流失率壓到 5% 以下——注意 CLV 暴衝的速度。分母小一點點，價值大很多：這就是「除法」的威力。'
+    : (F>=4 ? '高頻生意（手搖飲型）：單次金額小沒關係，次數會把 CLV 堆起來。'
+    : '試著只動「流失率」：從 10% 拉到 5%，看 CLV 發生什麼事——再對照拉高客單價的效果。');
+  document.getElementById('knobMsg').innerHTML='<b style="color:var(--red)">觀察：</b>'+msg;
+  if(!document.getElementById('s4').classList.contains('locked')) verdict();
+}
+[rT,rF,rC].forEach(r=>r.addEventListener('input',calc));
+/* step4 verdict */
+const rCAC=document.getElementById('rCAC');
+function verdict(){
+  const CAC=+rCAC.value;
+  document.getElementById('vCAC').textContent=CAC.toLocaleString();
+  const clv=parseInt(document.getElementById('clvOut').textContent.replace(/,/g,''))||0;
+  const ratio=clv/CAC;
+  const box=document.getElementById('lightBox');
+  box.classList.remove('ok','warn','bad');
+  let head, sub;
+  if(ratio>=3){ box.classList.add('ok'); head=`可以花（CLV 是成本的 ${ratio.toFixed(1)} 倍）`;
+    sub='顧客價值遠高於開發成本，這廣告是投資不是花費。'; }
+  else if(ratio>=1){ box.classList.add('warn'); head=`要小心（只有 ${ratio.toFixed(1)} 倍）`;
+    sub='帳面沒虧，但服務成本、退貨、算錯一點就翻船——實務上要 3 倍才安心。'; }
+  else { box.classList.add('bad'); head=`別花（${ratio.toFixed(1)} 倍——買一個賠一個）`;
+    sub='花 $'+CAC.toLocaleString()+' 買一個只值 $'+clv.toLocaleString()+' 的顧客。先補桶，再買人。'; }
+  document.getElementById('lightHead').textContent=head;
+  document.getElementById('lightSub').textContent=sub;
+}
+rCAC.addEventListener('input',verdict);
+</script>
