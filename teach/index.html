@@ -1,0 +1,224 @@
+<title>CRM，到底在學什麼？</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Noto+Sans+TC:wght@400;700;900&display=swap">
+<style>
+:root{
+  --paper:#FFFFFF; --ink:#1A1A1A; --red:#DC0014; --mute:#6E6E6E;
+  --rule:#DCDCDC; --tint:#F7F7F5;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+body{background:var(--paper); color:var(--ink);
+  font-family:"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif;
+  font-size:18px; line-height:1.65;}
+.wrap{max-width:880px; margin:0 auto; padding:0 24px 100px;}
+#bar{position:fixed; top:0; left:0; height:5px; background:var(--red); width:0%; z-index:9; transition:width .3s;}
+.hero{padding:70px 0 46px; border-bottom:3px solid var(--red);}
+.eyebrow{color:var(--red); font-weight:900; letter-spacing:.14em; font-size:14px; text-transform:uppercase;}
+.hero h1{font-size:clamp(38px,7.5vw,62px); line-height:1.12; margin:12px 0 16px; text-wrap:balance; font-weight:900;}
+.deck{font-size:19px; max-width:32em;}
+.deck b{color:var(--red);}
+.byline{color:var(--mute); font-size:14px; margin-top:16px;}
+section{padding:52px 0 12px; border-bottom:1px solid var(--rule);}
+section.locked{display:none;}
+.stepno{font-family:"Archivo Black","Arial Black",sans-serif; color:var(--red); font-size:32px; line-height:1;}
+h2{font-size:clamp(24px,4.8vw,34px); font-weight:900; margin:6px 0 6px; text-wrap:balance;}
+.sub{color:var(--mute); font-size:16px; margin-bottom:20px;}
+p.talk{max-width:34em; margin:12px 0; font-size:18.5px;}
+p.talk b{color:var(--red);}
+.hint{color:var(--mute); font-size:15px;}
+.btn{display:inline-block; border:none; cursor:pointer; font:inherit; font-weight:700; padding:14px 26px; margin:20px 12px 28px 0; font-size:17px; text-decoration:none;}
+.btn.primary{background:var(--ink); color:#fff;}
+.btn.primary:hover{background:#000;}
+.btn.red{background:var(--red); color:#fff;}
+.btn.ghost{background:transparent; color:var(--ink); border:2px solid var(--ink); padding:12px 24px;}
+.btn:focus-visible{outline:3px solid var(--red); outline-offset:2px;}
+/* tool wall */
+.wall{display:flex; flex-wrap:wrap; gap:10px; margin:18px 0;}
+.chip{border:2px solid var(--ink); padding:10px 16px; font-weight:700; font-size:16.5px; background:var(--paper);}
+.strip{background:var(--ink); color:#fff; padding:20px 24px; margin:22px 0; font-size:clamp(18px,3.6vw,23px); font-weight:900;}
+.strip b{color:#FF8A94;}
+.strip.red{background:var(--red);} .strip.red b{color:#fff; text-decoration:underline;}
+/* WPW */
+.wpw{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; margin:20px 0;}
+.wcard{border:3px solid var(--ink); padding:22px 20px;}
+.wcard .en{font-family:"Archivo Black","Arial Black",sans-serif; font-size:clamp(19px,2.6vw,24px); line-height:1.1;}
+.wcard .zh{font-size:18px; font-weight:900; color:var(--red); margin-top:8px;}
+.wcard p{font-size:15.5px; color:var(--mute); margin-top:8px;}
+.wcard.hot{border-color:var(--red);} .wcard.hot .en{color:var(--red);}
+/* stations */
+.flow{display:flex; align-items:stretch; gap:0; flex-wrap:wrap; margin:20px 0 8px;}
+.st{flex:1; min-width:130px; border:2px solid var(--ink); padding:14px 12px; text-align:left; position:relative;}
+.st h4{font-size:17px; font-weight:900;}
+.st small{display:block; color:var(--mute); font-size:13.5px; margin-top:2px;}
+.st .do{display:block; color:var(--red); font-weight:700; font-size:14.5px; margin-top:8px;}
+.arrow{align-self:center; font-family:"Archivo Black",sans-serif; font-size:20px; padding:0 4px; color:var(--ink);}
+.loop{border:2px dashed var(--red); color:var(--red); font-weight:900; padding:12px 16px; margin:12px 0; font-size:16.5px;}
+/* formula */
+.formula{background:var(--red); color:#fff; padding:18px 22px; margin:20px 0; font-weight:900; font-size:clamp(17px,3.4vw,22px);}
+.formula small{display:block; font-weight:400; font-size:15px; margin-top:6px; color:#ffd7db;}
+/* five departments */
+.five{display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:12px; margin:18px 0;}
+.dept{border:2px solid var(--ink); border-top:6px solid var(--red); padding:14px 16px;}
+.dept h4{font-size:17.5px; font-weight:900; color:var(--red);}
+.dept p{font-size:15px; color:var(--ink); margin-top:4px;}
+/* two roles */
+.roles{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px; margin:20px 0;}
+.role{border:3px solid var(--ink); padding:22px;}
+.role h3{font-size:21px; font-weight:900;}
+.role .tag{color:var(--red); font-weight:900; font-size:14px; letter-spacing:.1em;}
+.role p{font-size:16.5px; margin-top:10px;}
+.role p b{color:var(--red);}
+footer{color:var(--mute); font-size:14px; padding:28px 0 12px; line-height:1.8;}
+.demo{border:3px solid var(--red); padding:20px 22px; margin:20px 0;}
+.demo h3{color:var(--red); font-weight:900; font-size:20px;}
+</style>
+
+<div id="bar"></div>
+<div class="wrap">
+
+<header class="hero">
+  <div class="eyebrow">顧客關係管理 · 第一堂課</div>
+  <h1>CRM，<br>到底在學什麼？</h1>
+  <p class="deck">在回答之前，先看一面牆——<b>大家以為的 CRM</b>。</p>
+  <button class="btn primary" onclick="unlock(1)">看那面牆 ↓</button>
+  <div class="byline">授課教師：廖健博</div>
+</header>
+
+<!-- 01 工具牆 -->
+<section id="s1" class="locked">
+  <div class="stepno">01</div>
+  <h2>大家以為的 CRM</h2>
+  <div class="sub">問十個老闆「你有做顧客關係管理嗎」，會得到這面牆：</div>
+  <div class="wall">
+    <span class="chip">ManyChat 聊天機器人</span><span class="chip">LINE 官方帳號・自動回覆</span>
+    <span class="chip">AI 客服</span><span class="chip">FB／IG 小盒子互動經營</span>
+    <span class="chip">會員集點 App</span><span class="chip">簡訊・EDM 群發</span>
+    <span class="chip">Google 評論管理</span><span class="chip">POS 會員系統</span>
+    <span class="chip">再行銷廣告</span><span class="chip">客訴處理 SOP</span>
+    <span class="chip">CDP 顧客數據平台</span><span class="chip">NPS 滿意度問卷</span>
+  </div>
+  <p class="talk">每一樣都很炫，業務也很會講——老闆常常整套買單，覺得自己很進步。</p>
+  <div class="strip">但這些全是<b>工具</b>。買下去之前，很少有人問一句：<br>「等等——<b>我們為什麼需要它？</b>我們的店，真的需要 AI 客服嗎？」</div>
+  <button class="btn primary" onclick="unlock(2)">那課本呢？ ↓</button>
+</section>
+
+<!-- 02 課本 -->
+<section id="s2" class="locked">
+  <div class="stepno">02</div>
+  <h2>課本也是一樣的問題</h2>
+  <div class="sub">這門課的教科書會教這些——都很重要，都是真的</div>
+  <div class="wall">
+    <span class="chip">CRM 定義與效益</span><span class="chip">顧客戰略</span>
+    <span class="chip">資料倉儲</span><span class="chip">資料採礦</span>
+    <span class="chip">顧客滿意與忠誠</span><span class="chip">顧客生命週期</span>
+    <span class="chip">顧客價值 CLV</span><span class="chip">實戰案例</span>
+  </div>
+  <p class="talk">但試想一件事：<b>假設你把每一章都讀完、考卷都滿分——你的店，就會贏嗎？</b></p>
+  <p class="talk">工具沒有錯，知識也沒有錯。缺的是它們前面的三個問題。</p>
+  <button class="btn primary" onclick="unlock(3)">哪三個問題 ↓</button>
+</section>
+
+<!-- 03 WPW -->
+<section id="s3" class="locked">
+  <div class="stepno">03</div>
+  <h2>我上行銷課，永遠只問三件事</h2>
+  <div class="sub">這學期每一週的內容，都掛在這三個問題上</div>
+  <div class="wpw">
+    <div class="wcard"><div class="en">WHERE<br>WE ARE</div><div class="zh">看清處境</div>
+      <p>我的顧客在哪一站？我的生意離天花板多遠？——先診斷，別急著動手。</p></div>
+    <div class="wcard"><div class="en">HOW<br>TO PLAY</div><div class="zh">選對打法</div>
+      <p>不同的站、不同的業態、不同的階段——打法完全不同。一股腦全做＝沒有打法。</p></div>
+    <div class="wcard hot"><div class="en">HOW<br>TO WIN</div><div class="zh">押對本質</div>
+      <p>工具會過時、平台會換代。贏的人押的不是工具，是那個不會變的東西。</p></div>
+  </div>
+  <p class="talk">接下來十分鐘，我把這門課的第一遍 Where→Play→Win 走給你看。</p>
+  <button class="btn primary" onclick="unlock(4)">WHERE WE ARE ↓</button>
+</section>
+
+<!-- 04 WHERE -->
+<section id="s4" class="locked">
+  <div class="stepno">04</div>
+  <h2>Where we are：你的顧客，在哪一站？</h2>
+  <div class="sub">老闆說「來做 CRM」的第一個坑——沒先問這題，就一股腦全做</div>
+  <div class="flow">
+    <div class="st"><h4>潛在顧客</h4><small>還沒買過</small><span class="do">開發：廣告、試用</span></div>
+    <div class="arrow">→</div>
+    <div class="st"><h4>新顧客 N</h4><small>第一次買</small><span class="do">顧好第一次</span></div>
+    <div class="arrow">→</div>
+    <div class="st"><h4>主力顧客 E</h4><small>一直回來買</small><span class="do">會員、加購、複購</span></div>
+    <div class="arrow">→</div>
+    <div class="st"><h4>沉睡顧客 S</h4><small>很久沒來了</small><span class="do">喚醒：訊息、誘因</span></div>
+  </div>
+  <div class="loop">⟲ 還有第五站「忠誠推薦」：老顧客幫你介紹新顧客——把人送回第一站，免費的。</div>
+  <p class="talk">第二個診斷，是一條國中程度的除法——你這家店「最多能做多大」，其實算得出來：</p>
+  <div class="formula">顧客總數上限 ＝ 每月開發的新顧客 ÷ 每月流失率
+    <small>每月廣告帶進 10,000 人、流失 10% → 停在 100,000。廣告打不動不是行銷做爛了，是數學。想抬天花板：分子加倍要加倍的錢；<b>分母砍半，一毛不用加。</b></small>
+  </div>
+  <p class="hint">（回頭看那面工具牆：AI 客服顧的是哪一站？集點 App 呢？——工具只有掛回站上，才知道買得對不對。）</p>
+  <button class="btn primary" onclick="unlock(5)">HOW TO PLAY ↓</button>
+</section>
+
+<!-- 05 PLAY -->
+<section id="s5" class="locked">
+  <div class="stepno">05</div>
+  <h2>How to play：讓學生自己下判斷</h2>
+  <div class="sub">這兩個判斷，我做成了讓學生動手玩的網站——不是聽我講，是自己撞</div>
+  <div class="demo">
+    <h3>課堂實作 1｜管的是哪一站？</h3>
+    <p class="talk" style="font-size:16.5px">系統自動生成一家店的四千筆消費紀錄（每次都是不同的店：成熟店、爆紅店、失血店）。學生自己拉滑桿定「沉睡」標準、自己決定 10 萬預算投哪一站——投錯真的會虧，而且<b>換一家店，答案就翻盤</b>。</p>
+    <a class="btn red" href="../" target="_blank">現場玩：第一堂 →</a>
+    <h3 style="margin-top:10px">課堂實作 2｜一個顧客值多少錢？</h3>
+    <p class="talk" style="font-size:16.5px">老闆問：「廣告業務說開發一個顧客要 $600，該花嗎？」學生用三個滑桿算 CLV、看紅綠燈——<b>同一個 $600，留得住人的店買得起，留不住的店買不起。</b></p>
+    <a class="btn red" href="../clv/" target="_blank">現場玩：第二堂 →</a>
+  </div>
+  <p class="talk">打法的判準只有一句：<b>你的生意，靠「同一個顧客回來」賺錢的程度有多高？</b>高頻的店深耕主力、新店顧好第一次、一輩子一次的生意經營「顧客的嘴巴」。</p>
+  <button class="btn primary" onclick="unlock(6)">HOW TO WIN ↓</button>
+</section>
+
+<!-- 06 WIN -->
+<section id="s6" class="locked">
+  <div class="stepno">06</div>
+  <h2>How to win：顧客為什麼走？</h2>
+  <div class="sub">把流失的原因拆開——你會發現這根本不只是行銷的事</div>
+  <div class="five">
+    <div class="dept"><h4>研發管理</h4><p>東西不好用、越改越爛</p></div>
+    <div class="dept"><h4>人力資源</h4><p>店員擺臉、老手一直離職</p></div>
+    <div class="dept"><h4>生產與作業</h4><p>出貨慢、尖峰時段塞爆</p></div>
+    <div class="dept"><h4>財務管理</h4><p>付款麻煩、亂漲價</p></div>
+    <div class="dept"><h4>行銷管理</h4><p>訊息騷擾、承諾做不到——這才是行銷自己的</p></div>
+  </div>
+  <div class="strip red">流失率是全公司的體溫計；<br>CRM 是讀體溫計、把資源派去正確科別的那門課。</div>
+  <p class="talk">所以「贏」是什麼？兩條公式都告訴你了：生意的上限＝新顧客÷<b>流失率</b>；一個顧客的價值＝每月貢獻÷<b>流失率</b>。兩條除法、同一個分母。<b>贏的人不是最會用工具的人，是把「留」字管好的人。</b></p>
+  <button class="btn primary" onclick="unlock(7)">最後：兩個你 ↓</button>
+</section>
+
+<!-- 07 性質思考 -->
+<section id="s7" class="locked">
+  <div class="stepno">07</div>
+  <h2>同一個本質，兩種人生</h2>
+  <div class="sub">畢業後，你大概會變成其中一個——想想 CRM 對你是什麼</div>
+  <div class="roles">
+    <div class="role"><div class="tag">SCENARIO A</div><h3>你是新創，下個月要見投資人</h3>
+      <p>投資人不會問你會不會 ManyChat。他們看三張圖：<b>留存曲線平不平、天花板多高、老顧客有沒有越買越多</b>。因為他們賺的是股權增值——增速要「留得住」才值錢。</p>
+      <p>對你，CRM 不是客服部門——<b>是募資簡報的第一頁證據。</b></p></div>
+    <div class="role"><div class="tag">SCENARIO B</div><h3>你是巷口小店的老闆</h3>
+      <p>座位二十個、行銷預算五千。你不需要 AI 客服、不需要 CDP——你需要<b>記住常客的名字和喜好，讓他下週再來、順便帶朋友。</b></p>
+      <p>對你，CRM 不是系統——<b>是把有限的座位，裝滿會回來的人。</b></p></div>
+  </div>
+  <div class="strip">工具完全不同、預算差一萬倍——本質同一個字：<b>留</b>。<br>所以這門課不先教工具。<b>先教你判斷：你是誰、在哪、怎麼贏。</b></div>
+  <p class="talk">工具？學期中你自然會遇到它們——到時候你會知道哪些該買、哪些是推坑。</p>
+  <footer>「顧客關係管理」課程・第一堂<br>授課教師：廖健博｜顧客分群架構（NES）出自：吳基逞、廖健博、卓雍然（2024），〈釋放顧客終身價值的潛能〉，《管理學報》41(3)：387–411<br>課堂互動教材：<a href="../" style="color:var(--red)">管的是哪一站？</a>・<a href="../clv/" style="color:var(--red)">一個顧客值多少錢？</a></footer>
+</section>
+</div>
+
+<script>
+const TOTAL=7;
+function unlock(k){
+  const el=document.getElementById('s'+k);
+  el.classList.remove('locked');
+  document.getElementById('bar').style.width=(k/TOTAL*100)+'%';
+  requestAnimationFrame(()=>el.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'}));
+}
+</script>
