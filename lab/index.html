@@ -1,0 +1,428 @@
+<title>老闆丟來一包資料</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Noto+Sans+TC:wght@400;700;900&display=swap">
+<style>
+:root{
+  --paper:#FFFFFF; --ink:#1A1A1A; --red:#DC0014; --mute:#6E6E6E;
+  --rule:#DCDCDC; --tint:#F7F7F5;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--paper); color:var(--ink);
+  font-family:"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif;
+  font-size:18px; line-height:1.65;}
+.wrap{max-width:880px; margin:0 auto; padding:0 24px 100px;}
+#bar{position:fixed; top:0; left:0; height:5px; background:var(--red); width:0%; z-index:9;}
+.hero{padding:70px 0 46px; border-bottom:3px solid var(--red);}
+.eyebrow{color:var(--red); font-weight:900; letter-spacing:.14em; font-size:14px; text-transform:uppercase;}
+.hero h1{font-size:clamp(38px,7.5vw,58px); line-height:1.12; margin:12px 0 16px; font-weight:900;}
+.deck{font-size:19px; max-width:34em;}
+.deck b{color:var(--red);}
+.byline{color:var(--mute); font-size:14px; margin-top:16px;}
+section{padding:52px 0 20px; border-bottom:1px solid var(--rule);}
+section.locked{display:none;}
+.stepno{font-family:"Archivo Black","Arial Black",sans-serif; color:var(--red); font-size:32px; line-height:1;}
+h2{font-size:clamp(24px,4.8vw,32px); font-weight:900; margin:6px 0 6px;}
+.sub{color:var(--mute); font-size:16px; margin-bottom:18px;}
+p.talk{max-width:36em; margin:12px 0; font-size:18px;}
+p.talk b{color:var(--red);}
+.hint{color:var(--mute); font-size:14.5px; margin-top:8px;}
+.btn{display:inline-block; border:none; cursor:pointer; font:inherit; font-weight:700; padding:14px 26px; margin:16px 12px 10px 0; font-size:17px;}
+.btn.primary{background:var(--ink); color:#fff;}
+.btn.primary:hover{background:#000;}
+.btn.red{background:var(--red); color:#fff;}
+.btn.ghost{background:transparent; color:var(--ink); border:2px solid var(--ink); padding:12px 24px;}
+.btn:focus-visible{outline:3px solid var(--red); outline-offset:2px;}
+.strip{background:var(--ink); color:#fff; padding:20px 24px; margin:22px 0; font-size:clamp(17px,3.4vw,21px); font-weight:900; line-height:1.5;}
+.strip b{color:#FF8A94;}
+.strip.red{background:var(--red);} .strip.red b{color:#fff; text-decoration:underline;}
+/* 表格 */
+.tblwrap{overflow-x:auto; margin:14px 0; border:1px solid var(--rule);}
+table{border-collapse:collapse; width:100%; font-size:14.5px; min-width:520px;}
+th{background:var(--tint); text-align:left; font-weight:900; padding:8px 12px; border-bottom:2px solid var(--ink); white-space:nowrap;}
+td{padding:7px 12px; border-bottom:1px solid var(--rule); white-space:nowrap;}
+td.num{font-variant-numeric:tabular-nums; text-align:right;}
+.tag-disc{color:var(--red); font-weight:700;}
+/* 統計膠囊 */
+.stats{display:flex; flex-wrap:wrap; gap:12px; margin:16px 0;}
+.stat{background:var(--tint); border:1px solid var(--rule); padding:12px 18px;}
+.stat .n{font-family:"Archivo Black","Arial Black",sans-serif; font-size:26px; color:var(--red);}
+.stat small{display:block; color:var(--mute); font-size:13px;}
+/* 分群條 */
+.seg{margin:10px 0;}
+.seg .lab{display:flex; justify-content:space-between; font-size:15px; font-weight:900;}
+.seg .lab small{color:var(--mute); font-weight:400;}
+.seg .track{background:var(--tint); border:1px solid var(--rule); height:26px; margin-top:4px;}
+.seg .fill{background:var(--ink); height:100%; min-width:2px;}
+.seg.hot .fill{background:var(--red);}
+/* 切法切換 */
+.toggle{display:flex; gap:8px; margin:14px 0;}
+.tbtn{border:2px solid var(--ink); background:var(--paper); padding:9px 16px; font:inherit; font-size:15px; font-weight:700; cursor:pointer;}
+.tbtn.on{background:var(--ink); color:#fff;}
+/* 發現卡 */
+.finding{border:3px solid var(--ink); padding:18px 20px; margin:14px 0;}
+.finding h4{font-size:17px; font-weight:900; color:var(--red);}
+.finding p{font-size:15.5px; margin-top:6px;}
+.finding.alert{border-color:var(--red);}
+/* 對照卡 */
+.twins{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:14px; margin:16px 0;}
+.twin{border:2px solid var(--ink); padding:16px 18px;}
+.twin h5{font-size:16px; font-weight:900;}
+.twin h5 span{color:var(--red);}
+.twin p{font-size:14.5px; margin-top:6px;}
+.twin .score{font-family:"Archivo Black",sans-serif; font-size:20px; margin-top:6px;}
+/* 建議卡 */
+.segcards{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:13px; margin:16px 0;}
+.sc{background:var(--tint); border:1px solid var(--rule); border-top:5px solid var(--ink); padding:14px 16px;}
+.sc.hot{border-top-color:var(--red);}
+.sc h4{font-size:16.5px; font-weight:900;}
+.sc h4 small{color:var(--mute); font-weight:400; margin-left:6px;}
+.sc .feat{font-size:14px; color:#333; margin-top:4px;}
+.sc .ask{font-size:14.5px; font-weight:900; color:var(--red); margin-top:8px;}
+.sc .eg{font-size:13.5px; color:var(--mute); margin-top:4px;}
+footer{color:var(--mute); font-size:14px; padding:28px 0 12px; line-height:1.8;}
+footer a{color:var(--red); font-weight:700;}
+</style>
+
+<div id="bar"></div>
+<div class="wrap">
+
+<header class="hero">
+  <div class="eyebrow">顧客數據分析 · 實作體驗</div>
+  <h1>老闆丟來一包資料，<br>說：「分析一下。」</h1>
+  <p class="deck">這一頁讓你把整條路走一次：<b>從流水帳，到分群，到跟老闆講話</b>。<br>每個人抽到的資料都不一樣——你的發現，得自己挖。</p>
+  <button class="btn red" onclick="newData(); unlock(1);">抽一包資料 ↓</button>
+  <div class="byline">授課教師：廖健博</div>
+</header>
+
+<!-- 01 亂資料 -->
+<section id="s1" class="locked">
+  <div class="stepno">01</div>
+  <h2>這就是老闆給你的東西</h2>
+  <div class="sub">一年份的訂單流水帳。先看前 10 筆：</div>
+  <div class="stats" id="rawStats"></div>
+  <div class="tblwrap"><table id="rawTbl"></table></div>
+  <p class="talk">問你一個問題：<b>光看這張表，你說得出誰是重要顧客嗎？</b></p>
+  <div class="strip">說不出來，是正常的。流水帳的單位是「訂單」，但老闆問的是「顧客」。<br>分析的第一步永遠是：<b>把資料換算成你要回答的單位。</b></div>
+  <button class="btn primary" onclick="unlock(2)">換算成顧客 ↓</button>
+</section>
+
+<!-- 02 RFM -->
+<section id="s2" class="locked">
+  <div class="stepno">02</div>
+  <h2>從流水帳到顧客：算出 R、F、M</h2>
+  <div class="sub">每位顧客三個數字：R＝上次來距今幾天、F＝一年來了幾次、M＝一年共花多少。抽幾位看看：</div>
+  <div class="tblwrap"><table id="rfmTbl"></table></div>
+  <p class="talk">現在每一列是一位顧客了。但幾百位還是看不完——所以下一步：<b>打分數、分群</b>。</p>
+  <button class="btn primary" onclick="unlock(3)">打分數 ↓</button>
+</section>
+
+<!-- 03 分群 -->
+<section id="s3" class="locked">
+  <div class="stepno">03</div>
+  <h2>打分數，分群</h2>
+  <div class="sub">R、F、M 各打 1〜5 分（5 分最好），再按分數把顧客歸隊。</div>
+  <div class="toggle">
+    <button class="tbtn on" id="cutA" onclick="setCut('quintile')">切法 A：五等分（前 20% 得 5 分）</button>
+    <button class="tbtn" id="cutB" onclick="setCut('fixed')">切法 B：固定門檻（30 天內＝5 分…）</button>
+  </div>
+  <div id="segBars"></div>
+  <p class="talk" id="cutNote"></p>
+  <div class="strip">注意到了嗎？<b>換一種切法，群的人數就跟著動。</b>切分點是人訂的——<br>這就是為什麼報告裡一定要寫清楚你怎麼切，不然下一季對不上。</div>
+  <button class="btn primary" onclick="unlock(4)">看錢的真相 ↓</button>
+</section>
+
+<!-- 04 錢 -->
+<section id="s4" class="locked">
+  <div class="stepno">04</div>
+  <h2>錢的真相</h2>
+  <div class="sub">把營收攤開到各群身上，故事就出來了：</div>
+  <div class="stats" id="moneyStats"></div>
+  <div id="moneyBars"></div>
+  <p class="talk">少數人貢獻多數營收，這在幾乎每一份顧客資料裡都成立——<b>這就是「資源不平均分配」的理由</b>：預算該跟著錢走。</p>
+  <button class="btn primary" onclick="unlock(5)">拉警報 ↓</button>
+</section>
+
+<!-- 05 警報＋極限 -->
+<section id="s5" class="locked">
+  <div class="stepno">05</div>
+  <h2>兩個發現：一個要行動，一個要小心</h2>
+  <div id="findAlert"></div>
+  <div id="findTwin"></div>
+  <div class="strip red">這就是 RFM 的極限現場：<b>分數一樣的兩個人，可能是完全不同的顧客。</b><br>折扣一停，右邊那位就消失了。RFM 是第一刀，不是最後一刀。</div>
+  <button class="btn primary" onclick="unlock(6)">換你上場 ↓</button>
+</section>
+
+<!-- 06 建議 -->
+<section id="s6" class="locked">
+  <div class="stepno">06</div>
+  <h2>換你上場：每一群，你會怎麼做？</h2>
+  <div class="sub">先自己想，再看灰字的參考方向。記住：沒有發現，就沒有策略。</div>
+  <div class="segcards" id="segCards"></div>
+  <button class="btn primary" onclick="unlock(7)">把資料帶走 ↓</button>
+</section>
+
+<!-- 07 帶走 -->
+<section id="s7" class="locked">
+  <div class="stepno">07</div>
+  <h2>把資料帶走，跑一次真的</h2>
+  <p class="talk">剛剛整條路是網頁替你算的。現在把<b>你這一包</b>原始資料下載回去，用 Excel 或統計軟體自己重跑一次——數字對得上，才算真的會。</p>
+  <button class="btn red" onclick="downloadCSV()">下載我的資料（CSV）</button>
+  <p class="hint">每個人抽到的資料不同，交作業請附上自己的檔案。進階：對各群發問卷做 IPA，串起「交易資料＋知覺資料」——規格見〈老闆說要做數據分析〉第 07 站。</p>
+  <div class="strip">今天你走過的路：亂資料 → 換算單位 → 打分數 → 分群 → 看錢 → 拉警報 → 給建議。<br>工具會換，<b>這條路不會</b>。</div>
+</section>
+
+<footer>
+  《老闆丟來一包資料》——顧客數據分析實作體驗｜授課教師：廖健博<br>
+  同系列：<a href="../models/">《老闆說要做數據分析》判斷課</a>・<a href="../teach/">CRM 試教主頁</a>
+</footer>
+</div>
+
+<script>
+// ---------- 進度條 ----------
+addEventListener('scroll', () => {
+  const h = document.documentElement;
+  document.getElementById('bar').style.width =
+    (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+});
+function unlock(n) {
+  const s = document.getElementById('s' + n);
+  if (s) { s.classList.remove('locked'); s.scrollIntoView({behavior:'smooth'}); }
+}
+
+// ---------- 資料生成 ----------
+const ri = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
+const rf = (a, b) => Math.random() * (b - a) + a;
+let ORDERS = [], CUST = [], cutMode = 'quintile';
+
+// 原型：[人數範圍, 年購次數, 單筆金額, 折扣使用率, 最近一次距今天數]
+const ARCH = [
+  {key:'champ',  n:[12,18], f:[10,18], amt:[800,3000],  disc:[0,.15],  r:[1,20]},
+  {key:'loyal',  n:[20,28], f:[6,10],  amt:[500,1500],  disc:[0,.1],   r:[1,40]},
+  {key:'hunter', n:[16,24], f:[6,10],  amt:[400,1300],  disc:[.85,1],  r:[1,40]},
+  {key:'mass',   n:[50,70], f:[2,5],   amt:[300,1200],  disc:[.2,.5],  r:[10,120]},
+  {key:'risk',   n:[18,26], f:[5,9],   amt:[600,2000],  disc:[.1,.4],  r:[65,120]},
+  {key:'sleep',  n:[24,34], f:[1,4],   amt:[300,1000],  disc:[.2,.6],  r:[150,360]},
+  {key:'newc',   n:[18,26], f:[1,1],   amt:[300,1500],  disc:[0,.5],   r:[1,30]},
+  {key:'newbig', n:[2,4],   f:[1,1],   amt:[3500,9000], disc:[0,.2],   r:[1,30]},
+];
+
+function newData() {
+  ORDERS = []; CUST = [];
+  let cid = 0, oid = 0;
+  ARCH.forEach(a => {
+    const n = ri(a.n[0], a.n[1]);
+    for (let i = 0; i < n; i++) {
+      cid++;
+      const id = 'C' + String(cid).padStart(3, '0');
+      const f = ri(a.f[0], a.f[1]);
+      const discRate = rf(a.disc[0], a.disc[1]);
+      const rDays = ri(a.r[0], a.r[1]);
+      const days = [rDays];
+      for (let k = 1; k < f; k++) days.push(ri(rDays + 5, 364));
+      let m = 0;
+      days.forEach(d => {
+        oid++;
+        const amt = ri(a.amt[0], a.amt[1]);
+        m += amt;
+        ORDERS.push({o:oid, c:id, d:d, amt:amt, disc:Math.random() < discRate});
+      });
+      CUST.push({id:id, arch:a.key, r:rDays, f:f, m:m,
+                 discRate: ORDERS.filter(x => x.c === id && x.disc).length / f});
+    }
+  });
+  ORDERS.sort((x, y) => x.d - y.d);
+  ORDERS.forEach((o, i) => o.o = i + 1);
+  renderRaw(); score(); renderAll();
+}
+
+// ---------- Step1 亂資料 ----------
+function dstr(daysAgo) {
+  const t = new Date(); t.setDate(t.getDate() - daysAgo);
+  return (t.getMonth() + 1) + '/' + t.getDate();
+}
+function renderRaw() {
+  document.getElementById('rawStats').innerHTML =
+    `<div class="stat"><span class="n">${ORDERS.length.toLocaleString()}</span><small>筆訂單</small></div>
+     <div class="stat"><span class="n">${CUST.length}</span><small>位顧客</small></div>
+     <div class="stat"><span class="n">12</span><small>個月</small></div>`;
+  let h = '<tr><th>訂單</th><th>會員</th><th>日期</th><th>金額</th><th>折扣碼</th></tr>';
+  ORDERS.slice(-10).forEach(o => {
+    h += `<tr><td>#${o.o}</td><td>${o.c}</td><td>${dstr(o.d)}</td><td class="num">$${o.amt.toLocaleString()}</td><td>${o.disc ? '<span class="tag-disc">有</span>' : '—'}</td></tr>`;
+  });
+  document.getElementById('rawTbl').innerHTML = h;
+}
+
+// ---------- Step2 RFM 表 ----------
+function renderRFM() {
+  const pick = [...CUST].sort(() => Math.random() - .5).slice(0, 8)
+    .sort((a, b) => b.m - a.m);
+  let h = '<tr><th>會員</th><th>R 上次來（天前）</th><th>F 來幾次</th><th>M 共花多少</th></tr>';
+  pick.forEach(c => {
+    h += `<tr><td>${c.id}</td><td class="num">${c.r}</td><td class="num">${c.f}</td><td class="num">$${c.m.toLocaleString()}</td></tr>`;
+  });
+  document.getElementById('rfmTbl').innerHTML = h;
+}
+
+// ---------- Step3 打分數 ----------
+function qscore(vals, v, reverse) {
+  const sorted = [...vals].sort((a, b) => a - b);
+  const rank = sorted.findIndex(x => x >= v) / sorted.length;
+  const s = Math.min(5, Math.floor(rank * 5) + 1);
+  return reverse ? 6 - s : s;
+}
+function fixedR(r) { return r <= 30 ? 5 : r <= 60 ? 4 : r <= 100 ? 3 : r <= 180 ? 2 : 1; }
+function fixedF(f) { return f >= 10 ? 5 : f >= 6 ? 4 : f >= 4 ? 3 : f >= 2 ? 2 : 1; }
+function fixedM(m) { return m >= 12000 ? 5 : m >= 6000 ? 4 : m >= 3000 ? 3 : m >= 1200 ? 2 : 1; }
+
+function score() {
+  const rs = CUST.map(c => c.r), fs = CUST.map(c => c.f), ms = CUST.map(c => c.m);
+  CUST.forEach(c => {
+    if (cutMode === 'quintile') {
+      c.Rs = qscore(rs, c.r, true); c.Fs = qscore(fs, c.f, false); c.Ms = qscore(ms, c.m, false);
+    } else {
+      c.Rs = fixedR(c.r); c.Fs = fixedF(c.f); c.Ms = fixedM(c.m);
+    }
+    c.seg = segOf(c);
+  });
+}
+const SEGS = [
+  {k:'冠軍',   hot:true,  desc:'最近有來、常來、花得多', eg:'鞏固關係：專屬服務、早鳥資格。別再發折扣打擾。'},
+  {k:'忠誠常客', hot:false, desc:'常來，金額中上',        eg:'往上帶：推薦關聯商品、會員升級。'},
+  {k:'高價值但快睡著', hot:true, desc:'以前常來花很多，最近沒來', eg:'優先挽回：專人聯繫、問原因，比折扣有效。'},
+  {k:'有潛力', hot:false, desc:'最近有來，次數還不多',   eg:'養習慣：第二、三次回購的誘因。'},
+  {k:'新顧客', hot:false, desc:'剛來第一次',             eg:'留下第一印象：入會禮、首購後追蹤。'},
+  {k:'一般',   hot:false, desc:'中間值，量最大',         eg:'低成本維繫：自動化訊息就好，別花人力。'},
+  {k:'沉睡',   hot:false, desc:'很久沒來',               eg:'算成本：挽回值不值得？不值得就放手。'},
+];
+function segOf(c) {
+  if (c.Rs >= 4 && c.Fs >= 4 && c.Ms >= 4) return '冠軍';
+  if (c.Rs <= 3 && c.Fs >= 3 && c.Ms >= 4) return '高價值但快睡著';
+  if (c.Rs <= 2) return '沉睡';
+  if (c.Fs >= 4) return '忠誠常客';
+  if (c.Fs === 1 && c.Rs >= 4) return '新顧客';
+  if (c.Rs >= 4 && c.Fs >= 2) return '有潛力';
+  return '一般';
+}
+function setCut(m) {
+  cutMode = m;
+  document.getElementById('cutA').classList.toggle('on', m === 'quintile');
+  document.getElementById('cutB').classList.toggle('on', m === 'fixed');
+  score(); renderSegs(); renderMoney(); renderFindings(); renderCards();
+}
+function counts() {
+  const map = {};
+  SEGS.forEach(s => map[s.k] = {n:0, m:0});
+  CUST.forEach(c => { map[c.seg].n++; map[c.seg].m += c.m; });
+  return map;
+}
+function renderSegs() {
+  const map = counts(), max = Math.max(...SEGS.map(s => map[s.k].n));
+  let h = '';
+  SEGS.forEach(s => {
+    const n = map[s.k].n;
+    h += `<div class="seg ${s.hot ? 'hot' : ''}">
+      <div class="lab"><span>${s.k}<small>　${s.desc}</small></span><span>${n} 人</span></div>
+      <div class="track"><div class="fill" style="width:${(n / max * 100).toFixed(1)}%"></div></div></div>`;
+  });
+  document.getElementById('segBars').innerHTML = h;
+  document.getElementById('cutNote').innerHTML = cutMode === 'quintile'
+    ? '目前用<b>五等分</b>：跟同一份資料裡的其他顧客比，永遠有人拿 5 分。'
+    : '目前用<b>固定門檻</b>：跟事先訂好的標準比，可能整群都拿不到 5 分。點上面按鈕切回去比比看人數。';
+}
+
+// ---------- Step4 錢 ----------
+function renderMoney() {
+  const map = counts();
+  const total = CUST.reduce((s, c) => s + c.m, 0);
+  const sorted = [...CUST].sort((a, b) => b.m - a.m);
+  const top20n = Math.ceil(CUST.length * 0.2);
+  const top20m = sorted.slice(0, top20n).reduce((s, c) => s + c.m, 0);
+  document.getElementById('moneyStats').innerHTML =
+    `<div class="stat"><span class="n">$${Math.round(total / 1000).toLocaleString()}K</span><small>年營收</small></div>
+     <div class="stat"><span class="n">${(top20m / total * 100).toFixed(0)}%</span><small>來自前 20% 的顧客</small></div>
+     <div class="stat"><span class="n">${top20n}</span><small>人撐起這些營收</small></div>`;
+  const maxm = Math.max(...SEGS.map(s => map[s.k].m));
+  let h = '';
+  SEGS.forEach(s => {
+    const m = map[s.k].m;
+    h += `<div class="seg ${s.hot ? 'hot' : ''}">
+      <div class="lab"><span>${s.k}</span><span>$${Math.round(m / 1000).toLocaleString()}K（${(m / total * 100).toFixed(0)}%）</span></div>
+      <div class="track"><div class="fill" style="width:${(m / maxm * 100).toFixed(1)}%"></div></div></div>`;
+  });
+  document.getElementById('moneyBars').innerHTML = h;
+}
+
+// ---------- Step5 發現 ----------
+function renderFindings() {
+  const risk = CUST.filter(c => c.seg === '高價值但快睡著').sort((a, b) => b.m - a.m);
+  const ids = risk.slice(0, 6).map(c => c.id + '（$' + c.m.toLocaleString() + '，' + c.r + ' 天沒來）').join('、');
+  document.getElementById('findAlert').innerHTML =
+    `<div class="finding alert"><h4>🚨 要行動的：${risk.length} 位高價值顧客正在睡著</h4>
+     <p>他們一年花的錢是全店平均的好幾倍，但已經兩個月以上沒出現。名單：${ids}${risk.length > 6 ? '⋯' : ''}。</p>
+     <p><b>跟老闆這樣說：</b>「這 ${risk.length} 個人流失的話，等於損失一整群一般顧客。這週先打這份名單。」</p></div>`;
+  // 同分不同人
+  let twin = null;
+  outer:
+  for (const a of CUST) {
+    if (a.discRate > .8 && a.Fs >= 4) {
+      for (const b of CUST) {
+        if (b.discRate < .15 && b.Rs === a.Rs && b.Fs === a.Fs && b.Ms === a.Ms) { twin = [b, a]; break outer; }
+      }
+    }
+  }
+  if (!twin) {
+    for (const a of CUST) {
+      if (a.discRate > .8) {
+        for (const b of CUST) {
+          if (b.discRate < .15 && b.Fs === a.Fs && b.Ms === a.Ms) { twin = [b, a]; break; }
+        }
+      }
+      if (twin) break;
+    }
+  }
+  let h = '';
+  if (twin) {
+    const [b, a] = twin;
+    h = `<div class="finding"><h4>🔍 要小心的：這兩位分數幾乎一樣</h4>
+      <div class="twins">
+        <div class="twin"><h5>${b.id} <span>原價照買</span></h5>
+          <div class="score">R${b.Rs}・F${b.Fs}・M${b.Ms}</div>
+          <p>來 ${b.f} 次、花 $${b.m.toLocaleString()}，只有 ${(b.discRate * 100).toFixed(0)}% 的訂單用折扣。</p></div>
+        <div class="twin"><h5>${a.id} <span>折扣才出手</span></h5>
+          <div class="score">R${a.Rs}・F${a.Fs}・M${a.Ms}</div>
+          <p>來 ${a.f} 次、花 $${a.m.toLocaleString()}，但 ${(a.discRate * 100).toFixed(0)}% 的訂單都在用折扣。</p></div>
+      </div></div>`;
+  }
+  document.getElementById('findTwin').innerHTML = h;
+}
+
+// ---------- Step6 建議卡 ----------
+function renderCards() {
+  const map = counts();
+  let h = '';
+  SEGS.forEach(s => {
+    h += `<div class="sc ${s.hot ? 'hot' : ''}"><h4>${s.k}<small>${map[s.k].n} 人</small></h4>
+      <div class="feat">${s.desc}</div>
+      <div class="ask">你會怎麼做？</div>
+      <div class="eg">參考方向：${s.eg}</div></div>`;
+  });
+  document.getElementById('segCards').innerHTML = h;
+}
+
+// ---------- Step7 下載 ----------
+function downloadCSV() {
+  let csv = '﻿訂單編號,會員編號,日期,金額,是否使用折扣\n';
+  ORDERS.forEach(o => {
+    csv += `${o.o},${o.c},${dstr(o.d)},${o.amt},${o.disc ? '是' : '否'}\n`;
+  });
+  const a = document.createElement('a');
+  a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
+  a.download = '我的顧客資料.csv';
+  a.click();
+}
+
+function renderAll() { renderRFM(); renderSegs(); renderMoney(); renderFindings(); renderCards(); }
+</script>
