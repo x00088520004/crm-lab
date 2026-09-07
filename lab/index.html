@@ -6,83 +6,80 @@
 <style>
 :root{
   --paper:#FFFFFF; --ink:#1A1A1A; --red:#DC0014; --mute:#6E6E6E;
-  --rule:#DCDCDC; --tint:#F7F7F5;
+  --rule:#DCDCDC; --tint:#F7F7F5; --ok:#1B7A3D;
 }
 *{box-sizing:border-box; margin:0; padding:0;}
 html{scroll-behavior:smooth;}
 body{background:var(--paper); color:var(--ink);
   font-family:"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif;
-  font-size:18px; line-height:1.65;}
-.wrap{max-width:880px; margin:0 auto; padding:0 24px 100px;}
+  font-size:18px; line-height:1.6;}
+.wrap{max-width:960px; margin:0 auto; padding:0 24px 100px;}
 #bar{position:fixed; top:0; left:0; height:5px; background:var(--red); width:0%; z-index:9;}
-.hero{padding:70px 0 46px; border-bottom:3px solid var(--red);}
+.hero{padding:64px 0 40px; border-bottom:3px solid var(--red);}
 .eyebrow{color:var(--red); font-weight:900; letter-spacing:.14em; font-size:14px; text-transform:uppercase;}
-.hero h1{font-size:clamp(38px,7.5vw,58px); line-height:1.12; margin:12px 0 16px; font-weight:900;}
-.deck{font-size:19px; max-width:34em;}
+.hero h1{font-size:clamp(36px,7vw,56px); line-height:1.12; margin:12px 0 14px; font-weight:900;}
+.deck{font-size:19px; max-width:36em;}
 .deck b{color:var(--red);}
-.byline{color:var(--mute); font-size:14px; margin-top:16px;}
-section{padding:52px 0 20px; border-bottom:1px solid var(--rule);}
+.byline{color:var(--mute); font-size:14px; margin-top:14px;}
+section{padding:44px 0 20px; border-bottom:1px solid var(--rule);}
 section.locked{display:none;}
-.stepno{font-family:"Archivo Black","Arial Black",sans-serif; color:var(--red); font-size:32px; line-height:1;}
-h2{font-size:clamp(24px,4.8vw,32px); font-weight:900; margin:6px 0 6px;}
-.sub{color:var(--mute); font-size:16px; margin-bottom:18px;}
-p.talk{max-width:36em; margin:12px 0; font-size:18px;}
+.stepno{font-family:"Archivo Black","Arial Black",sans-serif; color:var(--red); font-size:30px; line-height:1;}
+h2{font-size:clamp(23px,4.6vw,30px); font-weight:900; margin:6px 0 6px;}
+.sub{color:var(--mute); font-size:16px; margin-bottom:16px;}
+p.talk{max-width:38em; margin:12px 0; font-size:17.5px;}
 p.talk b{color:var(--red);}
-.hint{color:var(--mute); font-size:14.5px; margin-top:8px;}
-.btn{display:inline-block; border:none; cursor:pointer; font:inherit; font-weight:700; padding:14px 26px; margin:16px 12px 10px 0; font-size:17px;}
+.hint{color:var(--mute); font-size:14px; margin-top:8px;}
+.btn{display:inline-block; border:none; cursor:pointer; font:inherit; font-weight:700; padding:13px 24px; margin:14px 10px 8px 0; font-size:16.5px;}
 .btn.primary{background:var(--ink); color:#fff;}
-.btn.primary:hover{background:#000;}
 .btn.red{background:var(--red); color:#fff;}
-.btn.ghost{background:transparent; color:var(--ink); border:2px solid var(--ink); padding:12px 24px;}
+.btn.small{padding:8px 16px; font-size:14.5px; margin:8px 8px 4px 0;}
 .btn:focus-visible{outline:3px solid var(--red); outline-offset:2px;}
-.strip{background:var(--ink); color:#fff; padding:20px 24px; margin:22px 0; font-size:clamp(17px,3.4vw,21px); font-weight:900; line-height:1.5;}
+.strip{background:var(--ink); color:#fff; padding:18px 22px; margin:20px 0; font-size:clamp(16.5px,3.2vw,20px); font-weight:900; line-height:1.5;}
 .strip b{color:#FF8A94;}
 .strip.red{background:var(--red);} .strip.red b{color:#fff; text-decoration:underline;}
-/* 表格 */
-.tblwrap{overflow-x:auto; margin:14px 0; border:1px solid var(--rule);}
-table{border-collapse:collapse; width:100%; font-size:14.5px; min-width:520px;}
-th{background:var(--tint); text-align:left; font-weight:900; padding:8px 12px; border-bottom:2px solid var(--ink); white-space:nowrap;}
-td{padding:7px 12px; border-bottom:1px solid var(--rule); white-space:nowrap;}
+.stats{display:flex; flex-wrap:wrap; gap:12px; margin:14px 0;}
+.stat{background:var(--tint); border:1px solid var(--rule); padding:10px 16px;}
+.stat .n{font-family:"Archivo Black","Arial Black",sans-serif; font-size:24px; color:var(--red);}
+.stat small{display:block; color:var(--mute); font-size:12.5px;}
+/* 操作台 */
+.console{border:3px solid var(--ink); margin:18px 0;}
+.con-head{background:var(--ink); color:#fff; padding:10px 18px; font-weight:900; font-size:16px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px;}
+.con-head small{color:#FF8A94; font-weight:700;}
+.con-body{padding:16px 18px;}
+.ctrl{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:14px 20px; margin-bottom:8px;}
+.ctl label{font-size:13.5px; font-weight:900; display:block;}
+.ctl label span{color:var(--red); font-family:"Archivo Black",sans-serif;}
+.ctl input[type=range]{width:100%; accent-color:var(--red);}
+.sorts{display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 4px;}
+.sbtn{border:2px solid var(--ink); background:var(--paper); padding:7px 12px; font:inherit; font-size:13.5px; font-weight:700; cursor:pointer;}
+.sbtn.on{background:var(--ink); color:#fff;}
+.reset{border:none; background:none; color:var(--mute); font-size:13px; cursor:pointer; text-decoration:underline; margin-left:auto;}
+.tblwrap{overflow-x:auto; margin:10px 0 4px; border:1px solid var(--rule); max-height:340px; overflow-y:auto;}
+table{border-collapse:collapse; width:100%; font-size:14px; min-width:560px;}
+th{background:var(--tint); text-align:left; font-weight:900; padding:7px 10px; border-bottom:2px solid var(--ink); white-space:nowrap; position:sticky; top:0;}
+td{padding:6px 10px; border-bottom:1px solid var(--rule); white-space:nowrap;}
 td.num{font-variant-numeric:tabular-nums; text-align:right;}
-.tag-disc{color:var(--red); font-weight:700;}
-/* 統計膠囊 */
-.stats{display:flex; flex-wrap:wrap; gap:12px; margin:16px 0;}
-.stat{background:var(--tint); border:1px solid var(--rule); padding:12px 18px;}
-.stat .n{font-family:"Archivo Black","Arial Black",sans-serif; font-size:26px; color:var(--red);}
-.stat small{display:block; color:var(--mute); font-size:13px;}
-/* 分群條 */
-.seg{margin:10px 0;}
-.seg .lab{display:flex; justify-content:space-between; font-size:15px; font-weight:900;}
-.seg .lab small{color:var(--mute); font-weight:400;}
-.seg .track{background:var(--tint); border:1px solid var(--rule); height:26px; margin-top:4px;}
-.seg .fill{background:var(--ink); height:100%; min-width:2px;}
-.seg.hot .fill{background:var(--red);}
-/* 切法切換 */
-.toggle{display:flex; gap:8px; margin:14px 0;}
-.tbtn{border:2px solid var(--ink); background:var(--paper); padding:9px 16px; font:inherit; font-size:15px; font-weight:700; cursor:pointer;}
-.tbtn.on{background:var(--ink); color:#fff;}
-/* 發現卡 */
-.finding{border:3px solid var(--ink); padding:18px 20px; margin:14px 0;}
-.finding h4{font-size:17px; font-weight:900; color:var(--red);}
-.finding p{font-size:15.5px; margin-top:6px;}
-.finding.alert{border-color:var(--red);}
-/* 對照卡 */
-.twins{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:14px; margin:16px 0;}
-.twin{border:2px solid var(--ink); padding:16px 18px;}
-.twin h5{font-size:16px; font-weight:900;}
-.twin h5 span{color:var(--red);}
-.twin p{font-size:14.5px; margin-top:6px;}
-.twin .score{font-family:"Archivo Black",sans-serif; font-size:20px; margin-top:6px;}
-/* 建議卡 */
-.segcards{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:13px; margin:16px 0;}
-.sc{background:var(--tint); border:1px solid var(--rule); border-top:5px solid var(--ink); padding:14px 16px;}
-.sc.hot{border-top-color:var(--red);}
-.sc h4{font-size:16.5px; font-weight:900;}
-.sc h4 small{color:var(--mute); font-weight:400; margin-left:6px;}
-.sc .feat{font-size:14px; color:#333; margin-top:4px;}
-.sc .ask{font-size:14.5px; font-weight:900; color:var(--red); margin-top:8px;}
-.sc .eg{font-size:13.5px; color:var(--mute); margin-top:4px;}
-footer{color:var(--mute); font-size:14px; padding:28px 0 12px; line-height:1.8;}
+.hot-td{color:var(--red); font-weight:700;}
+.count-line{font-size:15px; font-weight:900; margin-top:8px;}
+.count-line b{color:var(--red);}
+/* 任務 */
+.quest{border:3px solid var(--ink); padding:18px 20px; margin:16px 0;}
+.quest.done{border-color:var(--ok);}
+.quest h3{font-size:18px; font-weight:900;}
+.quest h3 .qno{font-family:"Archivo Black",sans-serif; color:var(--red); margin-right:8px;}
+.quest.done h3 .qno{color:var(--ok);}
+.quest p{font-size:15px; margin-top:6px;}
+.qfb{margin-top:10px; padding:10px 14px; background:var(--tint); border-left:4px solid var(--red); font-size:14.5px; display:none;}
+.qfb.ok{border-left-color:var(--ok);}
+.qfb b{color:var(--red);} .qfb.ok b{color:var(--ok);}
+/* 門檻實驗 */
+.thres{display:flex; flex-wrap:wrap; gap:16px; align-items:center; margin:10px 0;}
+.thres .big{font-family:"Archivo Black",sans-serif; font-size:26px; color:var(--red); min-width:80px;}
+.mini{display:flex; gap:12px; flex-wrap:wrap; margin-top:8px;}
+.mini .stat .n{font-size:22px;}
+/* 報告 */
+textarea{width:100%; min-height:130px; font:inherit; font-size:15px; padding:12px; border:2px solid var(--ink); margin-top:10px;}
+footer{color:var(--mute); font-size:14px; padding:26px 0 12px; line-height:1.8;}
 footer a{color:var(--red); font-weight:700;}
 </style>
 
@@ -90,98 +87,116 @@ footer a{color:var(--red); font-weight:700;}
 <div class="wrap">
 
 <header class="hero">
-  <div class="eyebrow">顧客數據分析 · 實作體驗</div>
+  <div class="eyebrow">顧客數據分析 · 動手操作</div>
   <h1>老闆丟來一包資料，<br>說：「分析一下。」</h1>
-  <p class="deck">這一頁讓你把整條路走一次：<b>從流水帳，到分群，到跟老闆講話</b>。<br>每個人抽到的資料都不一樣——你的發現，得自己挖。</p>
-  <button class="btn red" onclick="newData(); unlock(1);">抽一包資料 ↓</button>
+  <p class="deck">這次<b>滑鼠在你手上</b>：排序、篩選、調門檻，自己把問題挖出來。<br>每個人抽到的資料都不一樣，答案抄不了。</p>
+  <button class="btn red" onclick="newData(); unlock(1);">抽一包資料，開工 ↓</button>
   <div class="byline">授課教師：廖健博</div>
 </header>
 
-<!-- 01 亂資料 -->
+<!-- 01 操作台 -->
 <section id="s1" class="locked">
   <div class="stepno">01</div>
-  <h2>這就是老闆給你的東西</h2>
-  <div class="sub">一年份的訂單流水帳。先看前 10 筆：</div>
+  <h2>你的分析操作台</h2>
+  <div class="sub">系統已把一年份流水帳換算成「每位顧客一列」：R＝幾天沒來、F＝來幾次、M＝共花多少、折扣比＝多少比例的訂單用了折扣。</div>
   <div class="stats" id="rawStats"></div>
-  <div class="tblwrap"><table id="rawTbl"></table></div>
-  <p class="talk">問你一個問題：<b>光看這張表，你說得出誰是重要顧客嗎？</b></p>
-  <div class="strip">說不出來，是正常的。流水帳的單位是「訂單」，但老闆問的是「顧客」。<br>分析的第一步永遠是：<b>把資料換算成你要回答的單位。</b></div>
-  <button class="btn primary" onclick="unlock(2)">換算成顧客 ↓</button>
+  <div class="console">
+    <div class="con-head"><span>🔧 篩選與排序</span><small id="conMsg">拉桿子，下面的名單會即時變</small></div>
+    <div class="con-body">
+      <div class="ctrl">
+        <div class="ctl"><label>幾天沒來 ≥ <span id="vR">0</span> 天</label>
+          <input type="range" id="fR" min="0" max="180" value="0" step="5"></div>
+        <div class="ctl"><label>來過次數 ≥ <span id="vF">0</span> 次</label>
+          <input type="range" id="fF" min="0" max="12" value="0"></div>
+        <div class="ctl"><label>年消費 ≥ $<span id="vM">0</span></label>
+          <input type="range" id="fM" min="0" max="15000" value="0" step="500"></div>
+        <div class="ctl"><label>折扣訂單占比 ≥ <span id="vD">0</span>%</label>
+          <input type="range" id="fD" min="0" max="100" value="0" step="5"></div>
+      </div>
+      <div class="sorts">
+        排序：
+        <button class="sbtn on" data-k="m" onclick="setSort(this)">花最多</button>
+        <button class="sbtn" data-k="r" onclick="setSort(this)">最久沒來</button>
+        <button class="sbtn" data-k="f" onclick="setSort(this)">來最多次</button>
+        <button class="sbtn" data-k="d" onclick="setSort(this)">最愛用折扣</button>
+        <button class="reset" onclick="resetFilters()">全部歸零</button>
+      </div>
+      <div class="tblwrap"><table id="tbl"></table></div>
+      <div class="count-line" id="countLine"></div>
+    </div>
+  </div>
+  <p class="talk">先隨便玩一分鐘：排序按一按、桿子拉一拉，感覺一下這包資料的長相。玩夠了就接任務。</p>
+  <button class="btn primary" onclick="unlock(2)">接任務 ↓</button>
 </section>
 
-<!-- 02 RFM -->
+<!-- 02 任務 -->
 <section id="s2" class="locked">
   <div class="stepno">02</div>
-  <h2>從流水帳到顧客：算出 R、F、M</h2>
-  <div class="sub">每位顧客三個數字：R＝上次來距今幾天、F＝一年來了幾次、M＝一年共花多少。抽幾位看看：</div>
-  <div class="tblwrap"><table id="rfmTbl"></table></div>
-  <p class="talk">現在每一列是一位顧客了。但幾百位還是看不完——所以下一步：<b>打分數、分群</b>。</p>
-  <button class="btn primary" onclick="unlock(3)">打分數 ↓</button>
+  <h2>四個任務：把問題挖出來</h2>
+  <div class="sub">每個任務都用上面的操作台完成。圈好名單，按「交卷」，系統會告訴你抓得準不準。</div>
+
+  <div class="quest" id="q1">
+    <h3><span class="qno">任務 1</span>錢很多、人不見了</h3>
+    <p>老闆最怕的一種顧客：<b>以前花很多錢，但已經兩個月以上沒出現</b>。用「年消費」和「幾天沒來」兩支桿子，把這群人圈出來。</p>
+    <button class="btn small red" onclick="checkQ(1)">用目前的篩選交卷</button>
+    <div class="qfb" id="fb1"></div>
+  </div>
+
+  <div class="quest" id="q2">
+    <h3><span class="qno">任務 2</span>假忠誠：折扣獵人</h3>
+    <p>有一群人來很多次、看起來超忠誠——但幾乎<b>每一單都用折扣</b>。折扣一停他們就消失。用「來過次數」和「折扣占比」把他們圈出來。</p>
+    <button class="btn small red" onclick="checkQ(2)">用目前的篩選交卷</button>
+    <div class="qfb" id="fb2"></div>
+  </div>
+
+  <div class="quest" id="q3">
+    <h3><span class="qno">任務 3</span>錢集中在誰身上？</h3>
+    <p>行銷預算該不該平均分？先看營收是不是平均來的。</p>
+    <button class="btn small primary" onclick="runConc()">跑集中度分析</button>
+    <div class="qfb" id="fb3"></div>
+  </div>
+
+  <div class="quest" id="q4">
+    <h3><span class="qno">任務 4</span>門檻是人訂的</h3>
+    <p>公司要定一條規則：「幾天沒來，就算流失？」你來訂。拉拉看，觀察名單怎麼跟著門檻跳。</p>
+    <div class="thres">
+      <span>流失門檻：</span><span class="big"><span id="vT">60</span> 天</span>
+      <input type="range" id="fT" min="15" max="180" value="60" step="5" style="flex:1; min-width:200px; accent-color:var(--red);">
+    </div>
+    <div class="mini">
+      <div class="stat"><span class="n" id="lostN">–</span><small>被判定流失的顧客</small></div>
+      <div class="stat"><span class="n" id="lostHi">–</span><small>其中是高消費的</small></div>
+      <div class="stat"><span class="n" id="lostM">–</span><small>他們一年貢獻的營收</small></div>
+    </div>
+    <div class="qfb" id="fb4"></div>
+  </div>
+
+  <div id="allDone" style="display:none">
+    <div class="strip red">四個任務完成。你剛剛做的事，有個正式的名字：<b>探索式資料分析</b>。<br>先摸資料、先找問題——模型是之後的事。</div>
+    <button class="btn primary" onclick="unlock(3)">寫報告給老闆 ↓</button>
+  </div>
 </section>
 
-<!-- 03 分群 -->
+<!-- 03 報告 -->
 <section id="s3" class="locked">
   <div class="stepno">03</div>
-  <h2>打分數，分群</h2>
-  <div class="sub">R、F、M 各打 1〜5 分（5 分最好），再按分數把顧客歸隊。</div>
-  <div class="toggle">
-    <button class="tbtn on" id="cutA" onclick="setCut('quintile')">切法 A：五等分（前 20% 得 5 分）</button>
-    <button class="tbtn" id="cutB" onclick="setCut('fixed')">切法 B：固定門檻（30 天內＝5 分…）</button>
-  </div>
-  <div id="segBars"></div>
-  <p class="talk" id="cutNote"></p>
-  <div class="strip">注意到了嗎？<b>換一種切法，群的人數就跟著動。</b>切分點是人訂的——<br>這就是為什麼報告裡一定要寫清楚你怎麼切，不然下一季對不上。</div>
-  <button class="btn primary" onclick="unlock(4)">看錢的真相 ↓</button>
-</section>
-
-<!-- 04 錢 -->
-<section id="s4" class="locked">
-  <div class="stepno">04</div>
-  <h2>錢的真相</h2>
-  <div class="sub">把營收攤開到各群身上，故事就出來了：</div>
-  <div class="stats" id="moneyStats"></div>
-  <div id="moneyBars"></div>
-  <p class="talk">少數人貢獻多數營收，這在幾乎每一份顧客資料裡都成立——<b>這就是「資源不平均分配」的理由</b>：預算該跟著錢走。</p>
-  <button class="btn primary" onclick="unlock(5)">拉警報 ↓</button>
-</section>
-
-<!-- 05 警報＋極限 -->
-<section id="s5" class="locked">
-  <div class="stepno">05</div>
-  <h2>兩個發現：一個要行動，一個要小心</h2>
-  <div id="findAlert"></div>
-  <div id="findTwin"></div>
-  <div class="strip red">這就是 RFM 的極限現場：<b>分數一樣的兩個人，可能是完全不同的顧客。</b><br>折扣一停，右邊那位就消失了。RFM 是第一刀，不是最後一刀。</div>
-  <button class="btn primary" onclick="unlock(6)">換你上場 ↓</button>
-</section>
-
-<!-- 06 建議 -->
-<section id="s6" class="locked">
-  <div class="stepno">06</div>
-  <h2>換你上場：每一群，你會怎麼做？</h2>
-  <div class="sub">先自己想，再看灰字的參考方向。記住：沒有發現，就沒有策略。</div>
-  <div class="segcards" id="segCards"></div>
-  <button class="btn primary" onclick="unlock(7)">把資料帶走 ↓</button>
-</section>
-
-<!-- 07 帶走 -->
-<section id="s7" class="locked">
-  <div class="stepno">07</div>
-  <h2>把資料帶走，跑一次真的</h2>
-  <p class="talk">剛剛整條路是網頁替你算的。現在把<b>你這一包</b>原始資料下載回去，用 Excel 或統計軟體自己重跑一次——數字對得上，才算真的會。</p>
+  <h2>三行報告給老闆</h2>
+  <div class="sub">分析的最後一步不是圖表，是說人話。系統先按你的發現起個草稿，改成你自己的話。</div>
+  <button class="btn small primary" onclick="draftReport()">產生我的草稿</button>
+  <textarea id="report" placeholder="第一行：最重要的發現。第二行：證據（數字）。第三行：建議這週做什麼。"></textarea>
+  <p class="talk">然後把<b>你這一包資料</b>帶走，用 Excel 或統計軟體重跑一次——數字對得上，才算真的會。</p>
   <button class="btn red" onclick="downloadCSV()">下載我的資料（CSV）</button>
-  <p class="hint">每個人抽到的資料不同，交作業請附上自己的檔案。進階：對各群發問卷做 IPA，串起「交易資料＋知覺資料」——規格見〈老闆說要做數據分析〉第 07 站。</p>
-  <div class="strip">今天你走過的路：亂資料 → 換算單位 → 打分數 → 分群 → 看錢 → 拉警報 → 給建議。<br>工具會換，<b>這條路不會</b>。</div>
+  <p class="hint">進階作業：對圈出來的各群發問卷做 IPA，串起交易資料與知覺資料——做法見〈老闆說要做數據分析〉第 07 站。</p>
+  <div class="strip">今天的路：摸資料 → 圈問題 → 核對 → 說人話。<br>工具會一直換，<b>這條路不會</b>。</div>
 </section>
 
 <footer>
-  《老闆丟來一包資料》——顧客數據分析實作體驗｜授課教師：廖健博<br>
+  《老闆丟來一包資料》——顧客數據分析動手操作｜授課教師：廖健博<br>
   同系列：<a href="../models/">《老闆說要做數據分析》判斷課</a>・<a href="../teach/">CRM 試教主頁</a>
 </footer>
 </div>
 
 <script>
-// ---------- 進度條 ----------
 addEventListener('scroll', () => {
   const h = document.documentElement;
   document.getElementById('bar').style.width =
@@ -192,23 +207,20 @@ function unlock(n) {
   if (s) { s.classList.remove('locked'); s.scrollIntoView({behavior:'smooth'}); }
 }
 
-// ---------- 資料生成 ----------
+// ---------- 資料 ----------
 const ri = (a, b) => Math.floor(Math.random() * (b - a + 1)) + a;
 const rf = (a, b) => Math.random() * (b - a) + a;
-let ORDERS = [], CUST = [], cutMode = 'quintile';
-
-// 原型：[人數範圍, 年購次數, 單筆金額, 折扣使用率, 最近一次距今天數]
+let ORDERS = [], CUST = [], sortKey = 'm';
 const ARCH = [
-  {key:'champ',  n:[12,18], f:[10,18], amt:[800,3000],  disc:[0,.15],  r:[1,20]},
+  {key:'champ',  n:[12,18], f:[10,16], amt:[800,3000],  disc:[0,.15],  r:[1,20]},
   {key:'loyal',  n:[20,28], f:[6,10],  amt:[500,1500],  disc:[0,.1],   r:[1,40]},
   {key:'hunter', n:[16,24], f:[6,10],  amt:[400,1300],  disc:[.85,1],  r:[1,40]},
-  {key:'mass',   n:[50,70], f:[2,5],   amt:[300,1200],  disc:[.2,.5],  r:[10,120]},
-  {key:'risk',   n:[18,26], f:[5,9],   amt:[600,2000],  disc:[.1,.4],  r:[65,120]},
-  {key:'sleep',  n:[24,34], f:[1,4],   amt:[300,1000],  disc:[.2,.6],  r:[150,360]},
+  {key:'mass',   n:[50,70], f:[2,5],   amt:[300,1200],  disc:[.2,.5],  r:[10,55]},
+  {key:'risk',   n:[18,26], f:[5,9],   amt:[900,2400],  disc:[.1,.3],  r:[65,130]},
+  {key:'sleep',  n:[24,34], f:[1,3],   amt:[300,900],   disc:[.2,.6],  r:[150,360]},
   {key:'newc',   n:[18,26], f:[1,1],   amt:[300,1500],  disc:[0,.5],   r:[1,30]},
   {key:'newbig', n:[2,4],   f:[1,1],   amt:[3500,9000], disc:[0,.2],   r:[1,30]},
 ];
-
 function newData() {
   ORDERS = []; CUST = [];
   let cid = 0, oid = 0;
@@ -221,208 +233,174 @@ function newData() {
       const discRate = rf(a.disc[0], a.disc[1]);
       const rDays = ri(a.r[0], a.r[1]);
       const days = [rDays];
-      for (let k = 1; k < f; k++) days.push(ri(rDays + 5, 364));
-      let m = 0;
+      for (let k = 1; k < f; k++) days.push(ri(Math.min(rDays + 5, 360), 364));
+      let m = 0, dc = 0;
       days.forEach(d => {
         oid++;
         const amt = ri(a.amt[0], a.amt[1]);
+        const dd = Math.random() < discRate;
+        if (dd) dc++;
         m += amt;
-        ORDERS.push({o:oid, c:id, d:d, amt:amt, disc:Math.random() < discRate});
+        ORDERS.push({o:oid, c:id, d:d, amt:amt, disc:dd});
       });
-      CUST.push({id:id, arch:a.key, r:rDays, f:f, m:m,
-                 discRate: ORDERS.filter(x => x.c === id && x.disc).length / f});
+      CUST.push({id:id, arch:a.key, r:rDays, f:f, m:m, d:dc / f});
     }
   });
   ORDERS.sort((x, y) => x.d - y.d);
   ORDERS.forEach((o, i) => o.o = i + 1);
-  renderRaw(); score(); renderAll();
-}
-
-// ---------- Step1 亂資料 ----------
-function dstr(daysAgo) {
-  const t = new Date(); t.setDate(t.getDate() - daysAgo);
-  return (t.getMonth() + 1) + '/' + t.getDate();
-}
-function renderRaw() {
   document.getElementById('rawStats').innerHTML =
     `<div class="stat"><span class="n">${ORDERS.length.toLocaleString()}</span><small>筆訂單</small></div>
      <div class="stat"><span class="n">${CUST.length}</span><small>位顧客</small></div>
      <div class="stat"><span class="n">12</span><small>個月</small></div>`;
-  let h = '<tr><th>訂單</th><th>會員</th><th>日期</th><th>金額</th><th>折扣碼</th></tr>';
-  ORDERS.slice(-10).forEach(o => {
-    h += `<tr><td>#${o.o}</td><td>${o.c}</td><td>${dstr(o.d)}</td><td class="num">$${o.amt.toLocaleString()}</td><td>${o.disc ? '<span class="tag-disc">有</span>' : '—'}</td></tr>`;
-  });
-  document.getElementById('rawTbl').innerHTML = h;
+  resetFilters();
+  renderThres();
 }
 
-// ---------- Step2 RFM 表 ----------
-function renderRFM() {
-  const pick = [...CUST].sort(() => Math.random() - .5).slice(0, 8)
-    .sort((a, b) => b.m - a.m);
-  let h = '<tr><th>會員</th><th>R 上次來（天前）</th><th>F 來幾次</th><th>M 共花多少</th></tr>';
-  pick.forEach(c => {
-    h += `<tr><td>${c.id}</td><td class="num">${c.r}</td><td class="num">${c.f}</td><td class="num">$${c.m.toLocaleString()}</td></tr>`;
-  });
-  document.getElementById('rfmTbl').innerHTML = h;
-}
-
-// ---------- Step3 打分數 ----------
-function qscore(vals, v, reverse) {
-  const sorted = [...vals].sort((a, b) => a - b);
-  const rank = sorted.findIndex(x => x >= v) / sorted.length;
-  const s = Math.min(5, Math.floor(rank * 5) + 1);
-  return reverse ? 6 - s : s;
-}
-function fixedR(r) { return r <= 30 ? 5 : r <= 60 ? 4 : r <= 100 ? 3 : r <= 180 ? 2 : 1; }
-function fixedF(f) { return f >= 10 ? 5 : f >= 6 ? 4 : f >= 4 ? 3 : f >= 2 ? 2 : 1; }
-function fixedM(m) { return m >= 12000 ? 5 : m >= 6000 ? 4 : m >= 3000 ? 3 : m >= 1200 ? 2 : 1; }
-
-function score() {
-  const rs = CUST.map(c => c.r), fs = CUST.map(c => c.f), ms = CUST.map(c => c.m);
-  CUST.forEach(c => {
-    if (cutMode === 'quintile') {
-      c.Rs = qscore(rs, c.r, true); c.Fs = qscore(fs, c.f, false); c.Ms = qscore(ms, c.m, false);
-    } else {
-      c.Rs = fixedR(c.r); c.Fs = fixedF(c.f); c.Ms = fixedM(c.m);
-    }
-    c.seg = segOf(c);
+// ---------- 操作台 ----------
+const F = { r:0, f:0, m:0, d:0 };
+function bind(id, key, vid, fmt) {
+  const el = document.getElementById(id);
+  el.addEventListener('input', () => {
+    F[key] = +el.value;
+    document.getElementById(vid).textContent = fmt ? (+el.value).toLocaleString() : el.value;
+    renderTbl();
   });
 }
-const SEGS = [
-  {k:'冠軍',   hot:true,  desc:'最近有來、常來、花得多', eg:'鞏固關係：專屬服務、早鳥資格。別再發折扣打擾。'},
-  {k:'忠誠常客', hot:false, desc:'常來，金額中上',        eg:'往上帶：推薦關聯商品、會員升級。'},
-  {k:'高價值但快睡著', hot:true, desc:'以前常來花很多，最近沒來', eg:'優先挽回：專人聯繫、問原因，比折扣有效。'},
-  {k:'有潛力', hot:false, desc:'最近有來，次數還不多',   eg:'養習慣：第二、三次回購的誘因。'},
-  {k:'新顧客', hot:false, desc:'剛來第一次',             eg:'留下第一印象：入會禮、首購後追蹤。'},
-  {k:'一般',   hot:false, desc:'中間值，量最大',         eg:'低成本維繫：自動化訊息就好，別花人力。'},
-  {k:'沉睡',   hot:false, desc:'很久沒來',               eg:'算成本：挽回值不值得？不值得就放手。'},
-];
-function segOf(c) {
-  if (c.Rs >= 4 && c.Fs >= 4 && c.Ms >= 4) return '冠軍';
-  if (c.Rs <= 3 && c.Fs >= 3 && c.Ms >= 4) return '高價值但快睡著';
-  if (c.Rs <= 2) return '沉睡';
-  if (c.Fs >= 4) return '忠誠常客';
-  if (c.Fs === 1 && c.Rs >= 4) return '新顧客';
-  if (c.Rs >= 4 && c.Fs >= 2) return '有潛力';
-  return '一般';
-}
-function setCut(m) {
-  cutMode = m;
-  document.getElementById('cutA').classList.toggle('on', m === 'quintile');
-  document.getElementById('cutB').classList.toggle('on', m === 'fixed');
-  score(); renderSegs(); renderMoney(); renderFindings(); renderCards();
-}
-function counts() {
-  const map = {};
-  SEGS.forEach(s => map[s.k] = {n:0, m:0});
-  CUST.forEach(c => { map[c.seg].n++; map[c.seg].m += c.m; });
-  return map;
-}
-function renderSegs() {
-  const map = counts(), max = Math.max(...SEGS.map(s => map[s.k].n));
-  let h = '';
-  SEGS.forEach(s => {
-    const n = map[s.k].n;
-    h += `<div class="seg ${s.hot ? 'hot' : ''}">
-      <div class="lab"><span>${s.k}<small>　${s.desc}</small></span><span>${n} 人</span></div>
-      <div class="track"><div class="fill" style="width:${(n / max * 100).toFixed(1)}%"></div></div></div>`;
+bind('fR', 'r', 'vR'); bind('fF', 'f', 'vF'); bind('fM', 'm', 'vM', true); bind('fD', 'd', 'vD');
+function resetFilters() {
+  F.r = 0; F.f = 0; F.m = 0; F.d = 0;
+  [['fR','vR'],['fF','vF'],['fM','vM'],['fD','vD']].forEach(([i, v]) => {
+    document.getElementById(i).value = 0;
+    document.getElementById(v).textContent = '0';
   });
-  document.getElementById('segBars').innerHTML = h;
-  document.getElementById('cutNote').innerHTML = cutMode === 'quintile'
-    ? '目前用<b>五等分</b>：跟同一份資料裡的其他顧客比，永遠有人拿 5 分。'
-    : '目前用<b>固定門檻</b>：跟事先訂好的標準比，可能整群都拿不到 5 分。點上面按鈕切回去比比看人數。';
+  renderTbl();
+}
+function setSort(btn) {
+  document.querySelectorAll('.sbtn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  sortKey = btn.dataset.k;
+  renderTbl();
+}
+function filtered() {
+  return CUST.filter(c => c.r >= F.r && c.f >= F.f && c.m >= F.m && c.d * 100 >= F.d);
+}
+function renderTbl() {
+  if (!CUST.length) return;
+  const list = filtered().sort((a, b) =>
+    sortKey === 'r' ? b.r - a.r : sortKey === 'f' ? b.f - a.f :
+    sortKey === 'd' ? b.d - a.d : b.m - a.m);
+  let h = '<tr><th>會員</th><th>幾天沒來</th><th>來幾次</th><th>共花多少</th><th>折扣占比</th></tr>';
+  list.slice(0, 15).forEach(c => {
+    h += `<tr><td>${c.id}</td>
+      <td class="num ${c.r >= 60 ? 'hot-td' : ''}">${c.r}</td>
+      <td class="num">${c.f}</td>
+      <td class="num">$${c.m.toLocaleString()}</td>
+      <td class="num ${c.d >= .7 ? 'hot-td' : ''}">${Math.round(c.d * 100)}%</td></tr>`;
+  });
+  document.getElementById('tbl').innerHTML = h;
+  const tot = list.reduce((s, c) => s + c.m, 0);
+  document.getElementById('countLine').innerHTML =
+    `目前圈到 <b>${list.length}</b> 位顧客（顯示前 15 位），合計年消費 <b>$${tot.toLocaleString()}</b>`;
 }
 
-// ---------- Step4 錢 ----------
-function renderMoney() {
-  const map = counts();
-  const total = CUST.reduce((s, c) => s + c.m, 0);
+// ---------- 任務 ----------
+const DONE = {1:false, 2:false, 3:false, 4:false};
+function fb(n, ok, msg) {
+  const el = document.getElementById('fb' + n);
+  el.style.display = 'block';
+  el.className = 'qfb' + (ok ? ' ok' : '');
+  el.innerHTML = msg;
+  if (ok && !DONE[n]) {
+    DONE[n] = true;
+    document.getElementById('q' + n).classList.add('done');
+  }
+  if (DONE[1] && DONE[2] && DONE[3] && DONE[4]) {
+    document.getElementById('allDone').style.display = 'block';
+  }
+}
+function evalSet(truth, got) {
+  const hit = got.filter(c => truth.includes(c)).length;
+  return {hit, prec: got.length ? hit / got.length : 0, rec: truth.length ? hit / truth.length : 0};
+}
+function checkQ(n) {
+  const got = filtered();
+  if (n === 1) {
+    const ms = [...CUST].map(c => c.m).sort((a, b) => b - a);
+    const cut = ms[Math.floor(CUST.length * 0.3)];
+    const truth = CUST.filter(c => c.m >= cut && c.r >= 60);
+    const e = evalSet(truth, got);
+    if (!got.length) return fb(1, false, '名單是空的——先拉「年消費」和「幾天沒來」兩支桿子。');
+    if (e.rec >= .6 && e.prec >= .6)
+      return fb(1, true, `<b>抓到了。</b>你圈出 ${got.length} 人，命中 ${e.hit} 位高消費沉睡顧客。這份名單一年貢獻 $${truth.reduce((s,c)=>s+c.m,0).toLocaleString()}——流失掉等於丟掉一整群普通顧客。這就是要拿去給老闆看的第一張名單。`);
+    if (e.prec < .6)
+      return fb(1, false, `名單太寬：${got.length} 人裡只有 ${e.hit} 位是目標。混進來的多半是<b>金額不高</b>或<b>其實最近有來</b>的人——桿子再往右拉一點。`);
+    return fb(1, false, `方向對了但網撒太小：目標大約 ${truth.length} 人，你只抓到 ${e.hit} 位。<b>門檻放鬆一點</b>，別把真正的目標篩掉了。`);
+  }
+  if (n === 2) {
+    const truth = CUST.filter(c => c.f >= 5 && c.d >= .7);
+    const e = evalSet(truth, got);
+    if (!got.length) return fb(2, false, '名單是空的——用「來過次數」和「折扣占比」兩支桿子。');
+    if (e.rec >= .6 && e.prec >= .6)
+      return fb(2, true, `<b>抓到了。</b>${e.hit} 位折扣獵人現形：來很多次，但幾乎每單都用折扣。注意——他們的 R、F、M 跟真鐵粉幾乎一樣，<b>光看 RFM 分不出來</b>。這就是 RFM 的極限，也是「折扣該不該停」的關鍵名單。`);
+    if (e.prec < .6)
+      return fb(2, false, `混進了 ${got.length - e.hit} 位不是獵人的顧客——折扣占比的桿子拉高一點（提示：真獵人幾乎<b>每一單</b>都用）。`);
+    return fb(2, false, `抓到 ${e.hit} 位，但還有漏網的（目標約 ${truth.length} 位）。次數門檻可能設太高了。`);
+  }
+}
+function runConc() {
   const sorted = [...CUST].sort((a, b) => b.m - a.m);
-  const top20n = Math.ceil(CUST.length * 0.2);
-  const top20m = sorted.slice(0, top20n).reduce((s, c) => s + c.m, 0);
-  document.getElementById('moneyStats').innerHTML =
-    `<div class="stat"><span class="n">$${Math.round(total / 1000).toLocaleString()}K</span><small>年營收</small></div>
-     <div class="stat"><span class="n">${(top20m / total * 100).toFixed(0)}%</span><small>來自前 20% 的顧客</small></div>
-     <div class="stat"><span class="n">${top20n}</span><small>人撐起這些營收</small></div>`;
-  const maxm = Math.max(...SEGS.map(s => map[s.k].m));
-  let h = '';
-  SEGS.forEach(s => {
-    const m = map[s.k].m;
-    h += `<div class="seg ${s.hot ? 'hot' : ''}">
-      <div class="lab"><span>${s.k}</span><span>$${Math.round(m / 1000).toLocaleString()}K（${(m / total * 100).toFixed(0)}%）</span></div>
-      <div class="track"><div class="fill" style="width:${(m / maxm * 100).toFixed(1)}%"></div></div></div>`;
-  });
-  document.getElementById('moneyBars').innerHTML = h;
+  const total = CUST.reduce((s, c) => s + c.m, 0);
+  const n20 = Math.ceil(CUST.length * 0.2);
+  const m20 = sorted.slice(0, n20).reduce((s, c) => s + c.m, 0);
+  fb(3, true, `前 20% 的顧客（${n20} 人）貢獻了 <b>${Math.round(m20 / total * 100)}%</b> 的年營收（全店 $${Math.round(total/1000).toLocaleString()}K）。這就是「資源不平均分配」的理由：<b>預算跟著錢走</b>，不是每個顧客都分一樣多。`);
+}
+// 任務4：門檻實驗
+let tMoves = new Set([60]);
+document.getElementById('fT').addEventListener('input', function () {
+  document.getElementById('vT').textContent = this.value;
+  tMoves.add(+this.value);
+  renderThres();
+});
+function renderThres() {
+  if (!CUST.length) return;
+  const t = +document.getElementById('fT').value;
+  const lost = CUST.filter(c => c.r >= t);
+  const ms = [...CUST].map(c => c.m).sort((a, b) => b - a);
+  const cut = ms[Math.floor(CUST.length * 0.3)];
+  const hi = lost.filter(c => c.m >= cut);
+  document.getElementById('lostN').textContent = lost.length;
+  document.getElementById('lostHi').textContent = hi.length;
+  document.getElementById('lostM').textContent = '$' + Math.round(lost.reduce((s, c) => s + c.m, 0) / 1000).toLocaleString() + 'K';
+  if (tMoves.size >= 4 && !DONE[4]) {
+    fb(4, true, `看到了嗎？門檻從你試過的 ${Math.min(...tMoves)} 天拉到 ${Math.max(...tMoves)} 天，「流失顧客」的人數整批在跳。<b>切分點是人訂的</b>——所以正式報告裡，第一件事就是把你的門檻寫清楚，而且下一季不能亂改。`);
+  }
 }
 
-// ---------- Step5 發現 ----------
-function renderFindings() {
-  const risk = CUST.filter(c => c.seg === '高價值但快睡著').sort((a, b) => b.m - a.m);
-  const ids = risk.slice(0, 6).map(c => c.id + '（$' + c.m.toLocaleString() + '，' + c.r + ' 天沒來）').join('、');
-  document.getElementById('findAlert').innerHTML =
-    `<div class="finding alert"><h4>🚨 要行動的：${risk.length} 位高價值顧客正在睡著</h4>
-     <p>他們一年花的錢是全店平均的好幾倍，但已經兩個月以上沒出現。名單：${ids}${risk.length > 6 ? '⋯' : ''}。</p>
-     <p><b>跟老闆這樣說：</b>「這 ${risk.length} 個人流失的話，等於損失一整群一般顧客。這週先打這份名單。」</p></div>`;
-  // 同分不同人
-  let twin = null;
-  outer:
-  for (const a of CUST) {
-    if (a.discRate > .8 && a.Fs >= 4) {
-      for (const b of CUST) {
-        if (b.discRate < .15 && b.Rs === a.Rs && b.Fs === a.Fs && b.Ms === a.Ms) { twin = [b, a]; break outer; }
-      }
-    }
-  }
-  if (!twin) {
-    for (const a of CUST) {
-      if (a.discRate > .8) {
-        for (const b of CUST) {
-          if (b.discRate < .15 && b.Fs === a.Fs && b.Ms === a.Ms) { twin = [b, a]; break; }
-        }
-      }
-      if (twin) break;
-    }
-  }
-  let h = '';
-  if (twin) {
-    const [b, a] = twin;
-    h = `<div class="finding"><h4>🔍 要小心的：這兩位分數幾乎一樣</h4>
-      <div class="twins">
-        <div class="twin"><h5>${b.id} <span>原價照買</span></h5>
-          <div class="score">R${b.Rs}・F${b.Fs}・M${b.Ms}</div>
-          <p>來 ${b.f} 次、花 $${b.m.toLocaleString()}，只有 ${(b.discRate * 100).toFixed(0)}% 的訂單用折扣。</p></div>
-        <div class="twin"><h5>${a.id} <span>折扣才出手</span></h5>
-          <div class="score">R${a.Rs}・F${a.Fs}・M${a.Ms}</div>
-          <p>來 ${a.f} 次、花 $${a.m.toLocaleString()}，但 ${(a.discRate * 100).toFixed(0)}% 的訂單都在用折扣。</p></div>
-      </div></div>`;
-  }
-  document.getElementById('findTwin').innerHTML = h;
+// ---------- 報告 ----------
+function draftReport() {
+  const ms = [...CUST].map(c => c.m).sort((a, b) => b - a);
+  const cut = ms[Math.floor(CUST.length * 0.3)];
+  const risk = CUST.filter(c => c.m >= cut && c.r >= 60);
+  const hunters = CUST.filter(c => c.f >= 5 && c.d >= .7);
+  const sorted = [...CUST].sort((a, b) => b.m - a.m);
+  const total = CUST.reduce((s, c) => s + c.m, 0);
+  const n20 = Math.ceil(CUST.length * 0.2);
+  const m20 = sorted.slice(0, n20).reduce((s, c) => s + c.m, 0);
+  document.getElementById('report').value =
+`1. 最重要的發現：有 ${risk.length} 位高消費顧客已超過兩個月沒回來，他們一年貢獻約 $${Math.round(risk.reduce((s,c)=>s+c.m,0)/1000).toLocaleString()}K。
+2. 證據：前 20% 顧客貢獻 ${Math.round(m20/total*100)}% 營收；另外抓到 ${hunters.length} 位「幾乎只在折扣時購買」的顧客，忠誠是假象。
+3. 建議這週做：優先電聯沉睡的高消費名單；折扣改成只發給「被折扣推動」的族群，別再全面發放。`;
 }
-
-// ---------- Step6 建議卡 ----------
-function renderCards() {
-  const map = counts();
-  let h = '';
-  SEGS.forEach(s => {
-    h += `<div class="sc ${s.hot ? 'hot' : ''}"><h4>${s.k}<small>${map[s.k].n} 人</small></h4>
-      <div class="feat">${s.desc}</div>
-      <div class="ask">你會怎麼做？</div>
-      <div class="eg">參考方向：${s.eg}</div></div>`;
-  });
-  document.getElementById('segCards').innerHTML = h;
+function dstr(daysAgo) {
+  const t = new Date(); t.setDate(t.getDate() - daysAgo);
+  return (t.getMonth() + 1) + '/' + t.getDate();
 }
-
-// ---------- Step7 下載 ----------
 function downloadCSV() {
   let csv = '﻿訂單編號,會員編號,日期,金額,是否使用折扣\n';
-  ORDERS.forEach(o => {
-    csv += `${o.o},${o.c},${dstr(o.d)},${o.amt},${o.disc ? '是' : '否'}\n`;
-  });
+  ORDERS.forEach(o => { csv += `${o.o},${o.c},${dstr(o.d)},${o.amt},${o.disc ? '是' : '否'}\n`; });
   const a = document.createElement('a');
   a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
   a.download = '我的顧客資料.csv';
   a.click();
 }
-
-function renderAll() { renderRFM(); renderSegs(); renderMoney(); renderFindings(); renderCards(); }
 </script>
