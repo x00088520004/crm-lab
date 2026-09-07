@@ -1,0 +1,362 @@
+<title>老闆說要做數據分析</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Noto+Sans+TC:wght@400;700;900&display=swap">
+<style>
+:root{
+  --paper:#FFFFFF; --ink:#1A1A1A; --red:#DC0014; --mute:#6E6E6E;
+  --rule:#DCDCDC; --tint:#F7F7F5;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--paper); color:var(--ink);
+  font-family:"Noto Sans TC","Microsoft JhengHei","PingFang TC",sans-serif;
+  font-size:18px; line-height:1.65;}
+.wrap{max-width:880px; margin:0 auto; padding:0 24px 100px;}
+#bar{position:fixed; top:0; left:0; height:5px; background:var(--red); width:0%; z-index:9;}
+.hero{padding:70px 0 46px; border-bottom:3px solid var(--red);}
+.eyebrow{color:var(--red); font-weight:900; letter-spacing:.14em; font-size:14px; text-transform:uppercase;}
+.hero h1{font-size:clamp(38px,7.5vw,62px); line-height:1.12; margin:12px 0 16px; font-weight:900;}
+.deck{font-size:19px; max-width:34em;}
+.deck b{color:var(--red);}
+.byline{color:var(--mute); font-size:14px; margin-top:16px;}
+section{padding:52px 0 20px; border-bottom:1px solid var(--rule);}
+.stepno{font-family:"Archivo Black","Arial Black",sans-serif; color:var(--red); font-size:32px; line-height:1;}
+h2{font-size:clamp(24px,4.8vw,34px); font-weight:900; margin:6px 0 6px;}
+.sub{color:var(--mute); font-size:16px; margin-bottom:20px;}
+p.talk{max-width:36em; margin:12px 0; font-size:18.5px;}
+p.talk b{color:var(--red);}
+.hint{color:var(--mute); font-size:14.5px; margin-top:10px;}
+/* 牆 */
+.wall{display:flex; flex-wrap:wrap; gap:10px; margin:18px 0;}
+.chip{border:2px solid var(--ink); padding:10px 16px; font-weight:700; font-size:16px; background:var(--paper);}
+.strip{background:var(--ink); color:#fff; padding:20px 24px; margin:22px 0; font-size:clamp(18px,3.6vw,22px); font-weight:900; line-height:1.5;}
+.strip b{color:#FF8A94;}
+.strip.red{background:var(--red);} .strip.red b{color:#fff; text-decoration:underline;}
+/* 精神卡 */
+.duo{display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:14px; margin:20px 0;}
+.dcard{border:3px solid var(--ink); padding:22px 20px;}
+.dcard h3{font-size:19px; font-weight:900; color:var(--red);}
+.dcard p{font-size:16px; margin-top:8px;}
+/* RFM 三字母 */
+.rfm3{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin:18px 0;}
+.rf{border:2px solid var(--ink); padding:14px 16px;}
+.rf .big{font-family:"Archivo Black","Arial Black",sans-serif; font-size:30px; color:var(--red);}
+.rf b{display:block; font-size:16.5px; margin-top:2px;}
+.rf small{color:var(--mute); font-size:14px;}
+/* 失靈情境卡 */
+.fails{display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:13px; margin:20px 0;}
+.fcard{background:var(--tint); border:1px solid var(--rule); padding:16px 16px 14px;}
+.fcard h4{font-size:16.5px; font-weight:900;}
+.fcard h4 span{color:var(--red); font-family:"Archivo Black",sans-serif; margin-right:6px;}
+.fcard p{font-size:14.5px; color:#333; margin-top:6px; line-height:1.55;}
+/* 六把刀 */
+.knife{border:3px solid var(--ink); margin:16px 0; padding:20px 22px;}
+.knife .q{font-size:clamp(19px,3.4vw,23px); font-weight:900;}
+.knife .q span{color:var(--red);}
+.knife .tool{margin-top:10px; font-size:16.5px; font-weight:900; color:var(--red);}
+.knife .tool small{color:var(--mute); font-weight:400; font-size:14px; margin-left:6px;}
+.knife p{font-size:15.5px; margin-top:6px;}
+.knife .limit{color:var(--mute); font-size:14.5px; margin-top:6px;}
+.knife .boss{margin-top:10px; background:var(--tint); border-left:4px solid var(--red); padding:10px 14px; font-size:15.5px;}
+.knife .boss b{color:var(--red);}
+/* 選擇器 */
+.picker{border:3px solid var(--red); padding:22px; margin:20px 0;}
+.picker h3{color:var(--red); font-weight:900; font-size:20px; margin-bottom:12px;}
+.pick-label{font-weight:900; font-size:15.5px; margin:12px 0 6px;}
+.opts{display:flex; flex-wrap:wrap; gap:8px;}
+.opt{border:2px solid var(--ink); background:var(--paper); padding:9px 14px; font:inherit; font-size:15px; font-weight:700; cursor:pointer;}
+.opt.on{background:var(--ink); color:#fff; border-color:var(--ink);}
+.opt:focus-visible{outline:3px solid var(--red); outline-offset:2px;}
+#ans{margin-top:18px; display:none; border-top:2px solid var(--ink); padding-top:16px;}
+#ans .a-tool{font-size:19px; font-weight:900; color:var(--red);}
+#ans p{font-size:15.5px; margin-top:8px;}
+#ans .a-trap{color:var(--mute); font-size:14.5px;}
+#ans .a-boss{background:var(--tint); border-left:4px solid var(--red); padding:10px 14px; margin-top:10px; font-size:15.5px;}
+/* 疊層 */
+.stack{margin:20px 0;}
+.layer{border:2px solid var(--ink); padding:12px 18px; font-weight:700; font-size:16px; margin-top:8px;}
+.layer small{color:var(--mute); font-weight:400; margin-left:8px;}
+.layer.base{background:var(--ink); color:#fff;}
+.layer.base small{color:#bbb;}
+/* 作業 */
+.hw{border:3px solid var(--ink); padding:22px; margin:20px 0;}
+.hw h3{font-size:20px; font-weight:900;}
+.hw ol{margin:12px 0 0 22px; font-size:16px;}
+.hw li{margin:8px 0;}
+.hw li b{color:var(--red);}
+.trap-box{background:var(--tint); border:1px solid var(--rule); border-left:5px solid var(--red); padding:16px 18px; margin:16px 0;}
+.trap-box h4{font-weight:900; font-size:16.5px; color:var(--red);}
+.trap-box li{font-size:15px; margin:6px 0 6px 18px;}
+footer{color:var(--mute); font-size:14px; padding:28px 0 12px; line-height:1.8;}
+</style>
+
+<div id="bar"></div>
+<div class="wrap">
+
+<header class="hero">
+  <div class="eyebrow">顧客數據分析 · 判斷課</div>
+  <h1>老闆說，<br>要做數據分析。</h1>
+  <p class="deck">好。但是——<b>用哪個模型？為什麼是它？</b><br>這一頁不教公式，教判斷：每個工具的用途、限制，和怎麼回老闆。</p>
+  <div class="byline">授課教師：廖健博</div>
+</header>
+
+<!-- 01 模型牆 -->
+<section>
+  <div class="stepno">01</div>
+  <h2>先看一面牆</h2>
+  <div class="sub">你去查「顧客數據分析」，會撞到這面牆：</div>
+  <div class="wall">
+    <span class="chip">RFM 分析</span><span class="chip">K-means 分群</span>
+    <span class="chip">CLV 顧客終身價值</span><span class="chip">BG/NBD</span>
+    <span class="chip">存活分析</span><span class="chip">流失預測</span>
+    <span class="chip">Uplift 增量模型</span><span class="chip">傾向模型</span>
+    <span class="chip">Next Best Offer</span><span class="chip">世代分析</span>
+    <span class="chip">健康分數</span><span class="chip">IPA 重要度表現分析</span>
+  </div>
+  <p class="talk">每一個名字，AI 都能給你三段漂亮的解釋。</p>
+  <div class="strip">所以問題從來不是「這是什麼」。<br>是<b>你的公司現在這一題，該用哪一個</b>——這才是老闆付你薪水的原因。</div>
+</section>
+
+<!-- 02 RFM 精神 -->
+<section>
+  <div class="stepno">02</div>
+  <h2>從最老的一把刀學起：RFM</h2>
+  <div class="sub">一句話講完它的精神：<b style="color:var(--red)">過去的行為，是未來行為最好的預測。</b></div>
+  <div class="rfm3">
+    <div class="rf"><span class="big">R</span><b>最近有沒有來</b><small>Recency：上次消費距今多久</small></div>
+    <div class="rf"><span class="big">F</span><b>多常來</b><small>Frequency：一段期間買了幾次</small></div>
+    <div class="rf"><span class="big">M</span><b>花多少</b><small>Monetary：一段期間花了多少錢</small></div>
+  </div>
+  <p class="talk">它誕生在郵購時代。當年寄一本型錄要真金白銀，所以問題很具體：<b>型錄該寄給誰？</b>答案：先寄給最近、最常、花最多的那群，因為每一塊錢在他們身上回收最快。</p>
+  <div class="duo">
+    <div class="dcard"><h3>行為代替態度</h3><p>顧客「說」什麼不算數，「做」什麼才算數。三個指標全部從交易紀錄直接算，不用問卷、不用猜動機。</p></div>
+    <div class="dcard"><h3>資源不平均分配</h3><p>顧客的價值不同，對待方式就不該相同。行銷預算有限，先花在最可能回應的人身上。</p></div>
+  </div>
+</section>
+
+<!-- 03 失靈 -->
+<section>
+  <div class="stepno">03</div>
+  <h2>RFM 什麼時候會失靈</h2>
+  <div class="sub">它說得清「誰值得多花力氣」，說不清「為什麼」和「接下來會怎樣」。七個常見斷點：</div>
+  <div class="fails">
+    <div class="fcard"><h4><span>1</span>同分，不同人</h4><p>一個只在打折才出手，一個原價照買。RFM 分數一模一樣——折扣一停，前面那位就消失了。</p></div>
+    <div class="fcard"><h4><span>2</span>看不到賺不賺</h4><p>花最多的人，可能買的是低毛利品項、退貨率高、客服成本重。金額大 ≠ 賺錢。</p></div>
+    <div class="fcard"><h4><span>3</span>新顧客全長一樣</h4><p>F 都是 1、M 都是首購金額。誰會留下來？RFM 答不出來，要看來源渠道、首購品類這些前端訊號。</p></div>
+    <div class="fcard"><h4><span>4</span>一輩子買一次的生意</h4><p>汽車、房子、高價保單、B2B 設備：F 幾乎全是 1，R 動輒好幾年。分群等於沒分。</p></div>
+    <div class="fcard"><h4><span>5</span>訂閱制不適用</h4><p>F 和 M 是合約決定的。重點是「有沒有在用」：登入頻率、使用深度，不是刷卡紀錄。</p></div>
+    <div class="fcard"><h4><span>6</span>只看過去，不看未來</h4><p>誰快流失、誰還能養大、挽回值不值得——RFM 沒有時間方向，這些要靠別的模型。</p></div>
+    <div class="fcard"><h4><span>7</span>切分點是人訂的</h4><p>五分位一切，季初和季末跑出來的群可能對不上，策略就跟著飄。</p></div>
+  </div>
+  <div class="strip red">還有一個最容易被忽略的：<b>飽和點</b>。保險買滿的人，你再促銷也沒用。<br>高 RFM 排出來的是「誰最信任你」，不是「誰還有空間」——這份信任該拿去換交叉銷售和轉介，不是再塞一張促銷單。</div>
+</section>
+
+<!-- 04 六把刀 -->
+<section>
+  <div class="stepno">04</div>
+  <h2>後來，問題被拆細了</h2>
+  <div class="sub">業界沒有丟掉 RFM，是把「誰重要」這個大問題拆成六句老闆真正會問的話——一句配一把刀。</div>
+
+  <div class="knife">
+    <div class="q">「這個顧客，<span>還會不會再來</span>？」</div>
+    <div class="tool">BG/NBD・Pareto/NBD<small>零售、電商這種想來就來的生意</small></div>
+    <p>別怕名字。它做的事就一件：從購買節奏估「這個顧客還活著的機率」。三個月沒來的月購族大概走了；三個月沒來的年購族可能正常。</p>
+    <div class="limit">限制：契約型生意不用它——電信、保險、訂閱有合約在，直接用存活分析或流失模型，算「什麼時候會走、機率多高」。</div>
+    <div class="boss"><b>跟老闆這樣說：</b>「與其瞪著『很久沒來』的名單猜，不如算出每個人還活著的機率，挽回名單自動排好。」</div>
+  </div>
+
+  <div class="knife">
+    <div class="q">「這個顧客，<span>值多少錢</span>？」</div>
+    <div class="tool">CLV 顧客終身價值<small>常見組合：BG/NBD ＋ Gamma-Gamma</small></div>
+    <p>把「未來會買幾次」和「每次大概花多少」一起估出來，得到一個顧客一輩子值多少。</p>
+    <div class="limit">用途很實際：開發新顧客最多能花多少、挽回一個舊顧客值不值得，都從這個數字倒推。</div>
+    <div class="boss"><b>跟老闆這樣說：</b>「先算清楚一個顧客值多少，才知道廣告費燒到哪裡該停。」</div>
+  </div>
+
+  <div class="knife">
+    <div class="q">「折扣，<span>該發給誰</span>？」</div>
+    <div class="tool">Uplift 增量模型<small>電商、零售砸折扣的地方幾乎都靠它</small></div>
+    <p>它不問「誰會買」，問「誰<b>因為折扣才買</b>」。世界上有四種人：本來就會買的、推了才買的、怎麼推都不買的、推了反而跑的——折扣只值得花在第二種身上。</p>
+    <div class="limit">限制：要做過隨機發放的實驗（有人拿到、有人沒拿到）才估得出來，資料要求比前面都高。</div>
+    <div class="boss"><b>跟老闆這樣說：</b>「發折扣給本來就會買的人，等於把毛利白送。我們先分清楚誰是被折扣推動的。」</div>
+  </div>
+
+  <div class="knife">
+    <div class="q">「下一個，<span>該賣他什麼</span>？」</div>
+    <div class="tool">傾向模型・Next Best Offer<small>銀行、保險、電信的標準配備</small></div>
+    <p>對每個顧客，估他對每項產品的購買傾向，推最可能成的那一項。這正是「飽和點」的解法：壽險買滿了，但醫療險、投資型還沒有。</p>
+    <div class="limit">限制：推薦只會照歷史走，顧客沒買過的新品類，它一開始是瞎的。</div>
+    <div class="boss"><b>跟老闆這樣說：</b>「對買滿的老顧客，別再推同一張單——換推他信任我們但還沒買過的東西，或請他帶朋友來。」</div>
+  </div>
+
+  <div class="knife">
+    <div class="q">「顧客<span>沒什麼交易紀錄</span>，怎麼辦？」</div>
+    <div class="tool">使用行為・健康分數<small>App、SaaS、平台型生意</small></div>
+    <p>沒有刷卡紀錄，就看使用紀錄：登入頻率、功能觸及、互動深度，合成一個健康分數。電商則看瀏覽點擊的順序，抓的是「意圖」，不是結帳結果。</p>
+    <div class="limit">限制：分數怎麼加權是人訂的，要定期回頭驗證「低分的人是不是真的走了」。</div>
+    <div class="boss"><b>跟老闆這樣說：</b>「訂閱制的顧客不是付款那天流失的，是停止使用那天。我們該監控的是使用，不是帳單。」</div>
+  </div>
+
+  <div class="knife">
+    <div class="q">「這批新顧客，<span>留得住嗎</span>？」</div>
+    <div class="tool">世代分析 Cohort<small>訂閱制與新創幾乎都用</small></div>
+    <p>把同一個月進來的顧客綁成一批，追蹤三個月、六個月後各留下多少。不同月份的批次一比，馬上看出產品或活動改版有沒有用。</p>
+    <div class="limit">限制：它是照妖鏡不是藥方——看得出哪批留不住，看不出為什麼。</div>
+    <div class="boss"><b>跟老闆這樣說：</b>「上個月衝進來的新顧客，三個月後只剩一成。開發新顧客的錢，正在漏掉。」</div>
+  </div>
+</section>
+
+<!-- 05 選擇器 -->
+<section>
+  <div class="stepno">05</div>
+  <h2>換你判斷</h2>
+  <div class="sub">兩個問題選一選，看看該帶哪把刀進會議室。</div>
+  <div class="picker">
+    <h3>幫老闆選模型</h3>
+    <div class="pick-label">① 你的生意長怎樣？</div>
+    <div class="opts" id="bizOpts">
+      <button class="opt" data-v="retail">常常回購的店（零售／電商／餐飲）</button>
+      <button class="opt" data-v="sub">簽約或訂閱（電信／串流／SaaS）</button>
+      <button class="opt" data-v="once">一輩子買幾次（車／房／高價保單／B2B）</button>
+      <button class="opt" data-v="app">看使用不看購買（App／平台）</button>
+    </div>
+    <div class="pick-label">② 老闆真正想知道的是？</div>
+    <div class="opts" id="qOpts">
+      <button class="opt" data-v="who">哪群顧客該優先顧</button>
+      <button class="opt" data-v="alive">誰快流失了</button>
+      <button class="opt" data-v="worth">顧客值多少錢</button>
+      <button class="opt" data-v="promo">促銷該給誰</button>
+      <button class="opt" data-v="next">下一個賣什麼</button>
+      <button class="opt" data-v="cohort">新顧客留得住嗎</button>
+    </div>
+    <div id="ans">
+      <div class="a-tool" id="aTool"></div>
+      <p id="aHow"></p>
+      <p class="a-trap" id="aTrap"></p>
+      <div class="a-boss" id="aBoss"></div>
+    </div>
+  </div>
+  <p class="hint">提示：同一個問題，在不同生意型態下答案不一樣——這就是本頁想教的那件事。</p>
+</section>
+
+<!-- 06 疊著用 -->
+<section>
+  <div class="stepno">06</div>
+  <h2>所以 RFM 死了嗎？</h2>
+  <div class="sub">沒有。它便宜、透明、老闆聽得懂——這三點很多新方法做不到。它只是換了位置。</div>
+  <div class="stack">
+    <div class="layer base">RFM 打底<small>第一刀粗分：誰重要</small></div>
+    <div class="layer">＋ 流失層<small>誰快走（BG/NBD・存活分析）</small></div>
+    <div class="layer">＋ 價值層<small>值多少（CLV）</small></div>
+    <div class="layer">＋ 行動層<small>推誰有效、推什麼（Uplift・NBO）</small></div>
+  </div>
+  <p class="talk">多數公司是<b>疊著用</b>：RFM 先把客群粗分出來，再按手上要解決的問題往上加一層。把 RFM 當終點，就會退化成填格子。</p>
+  <div class="strip">模型的名字，AI 都背得出來。<br><b>知道你的公司這一題該用哪一把</b>——那才是你帶得走的東西。</div>
+</section>
+
+<!-- 07 實作 -->
+<section>
+  <div class="stepno">07</div>
+  <h2>換你當顧問（實作）</h2>
+  <div class="sub">拿一份顧客消費資料庫，走完整條線。可當作業、個案，或大學專題的起點。</div>
+  <div class="hw">
+    <h3>流程四步</h3>
+    <ol>
+      <li><b>RFM 分群：</b>用交易資料算 R、F、M，分群<b>只用這三個變數</b>。</li>
+      <li><b>對各群發問卷：</b>IPA 題項（重要度＋表現）和職業、收入、年齡一起收，用會員編號串回交易端。</li>
+      <li><b>逐群跑 IPA：</b>比較各群在四個象限的落點差異。人口屬性不進分群，留著描述各群的輪廓。</li>
+      <li><b>寫策略建議：</b>先找到「發現」再下筆。判準範例：高價值群把某個服務屬性評為「重要但表現差」——那就是資源錯置與流失風險的直接證據。</li>
+    </ol>
+  </div>
+  <div class="trap-box">
+    <h4>三個必踩的坑（先幫你踩了）</h4>
+    <ul>
+      <li><b>別把職業、收入丟進 k-means。</b>分群只用 R、F、M；人口屬性留作各群的側寫，用交叉表描述就好。</li>
+      <li><b>IPA 十字線的位置要先講死。</b>放量表中點還是樣本平均，象限歸屬會整組不同——動手前就決定，寫進報告。</li>
+      <li><b>策略不是填格子。</b>RFM 象限、IPA 象限、策略矩陣疊在一起，很容易變成每格配一句話。沒有發現，就沒有策略。</li>
+    </ul>
+  </div>
+  <div class="wall">
+    <span class="chip">搭配課程：商業數據分析</span>
+    <span class="chip">行銷研究</span>
+    <span class="chip">大學專題</span>
+  </div>
+</section>
+
+<footer>
+  《老闆說要做數據分析》——顧客數據分析的判斷課｜授課教師：廖健博<br>
+  同系列：《老闆說要做 CRM》學習單・CRM 教學網站
+</footer>
+</div>
+
+<script>
+// 進度條
+addEventListener('scroll', () => {
+  const h = document.documentElement;
+  document.getElementById('bar').style.width =
+    (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+});
+
+// 選擇器資料：biz × question
+const T = {
+  rfm:   {tool:"RFM 分析（第一刀）", how:"用交易資料把顧客粗分成幾群，先看清楚誰重要。便宜、透明、當天就能有結果。"},
+  bgnbd: {tool:"BG/NBD／Pareto/NBD", how:"從購買節奏估每個顧客「還活著的機率」，挽回名單自動排序。"},
+  surv:  {tool:"存活分析／流失模型", how:"契約型生意直接估「什麼時候會走、機率多高」，在到期前出手。"},
+  clv:   {tool:"CLV（BG/NBD＋Gamma-Gamma）", how:"估未來購買次數 × 每次金額，算出顧客一輩子值多少。"},
+  uplift:{tool:"Uplift 增量模型", how:"分出「因為促銷才買」的那群人，折扣只花在他們身上。"},
+  nbo:   {tool:"傾向模型／Next Best Offer", how:"對每個顧客估各產品的購買傾向，推最可能成的下一項。"},
+  cohort:{tool:"世代分析", how:"同一批進來的顧客綁在一起追留存，批次互比看改版有沒有用。"},
+  health:{tool:"使用行為健康分數", how:"登入頻率、功能觸及、互動深度合成分數，監控使用而不是帳單。"},
+};
+const A = {
+  "retail-who":  {...T.rfm,  trap:"坑：切分點要固定下來，不然每季群都在飄。", boss:"「先用 RFM 花一天把顧客分群，之後每個問題都在這張地圖上談。」"},
+  "retail-alive":{...T.bgnbd,trap:"坑：別只看「多久沒來」，月購族和年購族的正常節奏不同。", boss:"「與其猜誰走了，不如算每個人還活著的機率，名單自動排好。」"},
+  "retail-worth":{...T.clv,  trap:"坑：記得扣毛利與退貨，金額大不等於賺錢。", boss:"「算出顧客值多少，才知道廣告費燒到哪裡該停。」"},
+  "retail-promo":{...T.uplift,trap:"坑：要先做小規模隨機發放，才估得出「誰被折扣推動」。", boss:"「發給本來就會買的人是白送毛利，先實驗分出被推動的那群。」"},
+  "retail-next": {...T.nbo,  trap:"坑：新品類沒有歷史資料，一開始要人工給線索。", boss:"「照每個人的購買軌跡推下一項，比全店群發有效得多。」"},
+  "retail-cohort":{...T.cohort,trap:"坑：留存差要回頭查來源渠道，別只怪產品。", boss:"「把每月新客當一批追三個月，開發新顧客的錢有沒有漏，一張表看完。」"},
+  "sub-who":   {tool:"健康分數＋合約資料", how:"訂閱制的 F 和 M 是合約決定的，重要度看使用深度和續約狀態。", trap:"坑：別直接套 RFM，刷卡紀錄在這裡是假訊號。", boss:"「我們的顧客不是付款那天流失的，是停止使用那天。」"},
+  "sub-alive": {...T.surv, trap:"坑：合約到期日是最強的訊號，模型再加使用行為。", boss:"「在到期前 60 天找出高風險名單，比到期後打電話便宜十倍。」"},
+  "sub-worth": {...T.clv,  trap:"坑：訂閱制 CLV 的關鍵是留存率，小數點的差異會放大很多倍。", boss:"「留存率多一個百分點，顧客價值差很多——先算給你看。」"},
+  "sub-promo": {...T.uplift,trap:"坑：續約優惠最容易發給本來就會續的人，一定要留對照組。", boss:"「續約折扣先實驗：分清楚誰是被優惠留下的，別全面發放。」"},
+  "sub-next":  {...T.nbo,  trap:"坑：升級方案的推薦要看使用量，不是看年資。", boss:"「用量頂到上限的顧客才推升級，其他人推會嚇跑。」"},
+  "sub-cohort":{...T.cohort,trap:"坑：訂閱制世代圖是標配，留存曲線的「肘點」就是產品要救的地方。", boss:"「看每一批的留存曲線在第幾個月斷崖，那裡就是問題。」"},
+  "once-who":  {tool:"別用 RFM——換問題", how:"一輩子買一次的生意 F 全是 1，分群等於沒分。重要的顧客是「最信任你」的那群：成交過、互動深、願意介紹。", trap:"坑：硬套 RFM 會得到一張沒有資訊的表。", boss:"「這行的重點不是誰常買，是誰信任我們——名單從服務紀錄和轉介來。」"},
+  "once-alive":{tool:"換問題：問「下一件相關的事」", how:"買過房的人不會再買房，但會裝修、買保險、換車位。追蹤生命週期事件，不是回購。", trap:"坑：「流失」在這裡沒有意義，別浪費力氣算。", boss:"「顧客不會回來買第二間，但他的下一個需求我們接得到。」"},
+  "once-worth":{tool:"CLV 的變形：含轉介價值", how:"單筆成交金額＋他帶來的轉介案一起算，才是這類顧客的真實價值。", trap:"坑：只看成交金額會低估老顧客，轉介要記進他的帳。", boss:"「一個滿意的顧客帶兩個朋友來，他的價值是三張合約，不是一張。」"},
+  "once-promo":{...T.nbo, trap:"坑：對買滿的人促銷是打擾。交叉銷售與轉介活動才是對的動作。", boss:"「別再對成交過的顧客發促銷，改推關聯產品、辦轉介活動。」"},
+  "once-next": {...T.nbo, trap:"坑：這行的 NBO 靠生命週期規則（成家、換屋、退休），不是靠演算法。", boss:"「照人生階段排產品順序：剛買房的推火險，孩子出生的推教育金。」"},
+  "once-cohort":{tool:"世代分析（以成交年分批）", how:"以成交年份分批，追蹤轉介率與加購率，看服務品質的長期效果。", trap:"坑：樣本小，別切太細。", boss:"「五年前成交的那批顧客，今年還有多少人介紹朋友來？這是服務的成績單。」"},
+  "app-who":   {...T.health,trap:"坑：權重是人訂的，定期回驗「低分的人是不是真的走了」。", boss:"「每個顧客一個健康分數，客服和業務看同一張表。」"},
+  "app-alive": {...T.health,trap:"坑：流失的前兆是使用頻率下滑，等到不登入才動就晚了。", boss:"「使用量連兩週下滑就預警，別等顧客消失才發現。」"},
+  "app-worth": {...T.clv,  trap:"坑：免費顧客的價值在轉換機率，付費顧客才進 CLV。", boss:"「先分免費和付費兩本帳：一本算轉換，一本算終身價值。」"},
+  "app-promo": {...T.uplift,trap:"坑：推播疲勞是真的，「推了反而跑」的那群在 App 裡特別多。", boss:"「推播先實驗再全發——有一群人是被通知煩走的。」"},
+  "app-next":  {tool:"下一步功能推薦（NBO 的使用版）", how:"看使用序列推「下一個該打開的功能」，讓顧客越用越深。", trap:"坑：目標是使用深度，不是點擊率。", boss:"「顧客多用一個核心功能，留存率就上一階——推功能就是推留存。」"},
+  "app-cohort":{...T.cohort,trap:"坑：改版效果一定用世代比，全體平均會把新舊顧客混在一起。", boss:"「改版前後各一批顧客拉出留存曲線，有沒有效一眼見真章。」"},
+};
+let biz = null, q = null;
+function wire(groupId, setter) {
+  document.querySelectorAll('#' + groupId + ' .opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#' + groupId + ' .opt').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      setter(btn.dataset.v);
+      render();
+    });
+  });
+}
+wire('bizOpts', v => biz = v);
+wire('qOpts', v => q = v);
+function render() {
+  if (!biz || !q) return;
+  const a = A[biz + '-' + q];
+  if (!a) return;
+  document.getElementById('ans').style.display = 'block';
+  document.getElementById('aTool').textContent = a.tool;
+  document.getElementById('aHow').textContent = a.how;
+  document.getElementById('aTrap').textContent = a.trap;
+  document.getElementById('aBoss').innerHTML = '<b>跟老闆這樣說：</b>' + a.boss;
+}
+</script>
